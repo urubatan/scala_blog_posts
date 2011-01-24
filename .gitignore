@@ -1,0 +1,7 @@
+*.swp
+output/*
+.bundle
+cucumber_rails/db/*.sqlite3
+cucumber_rails/log/*.log
+cucumber_rails/tmp/**/*
+.redcar/*
