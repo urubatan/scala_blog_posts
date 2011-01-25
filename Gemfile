@@ -1,4 +1,4 @@
 source "http://rubygems.org"
 group :rake do
-  gem "codemerger", :require => "codemerger/rake_tasks"
+  gem "codemerger", "0.1.0", :require => "codemerger/rake_tasks"
 end
