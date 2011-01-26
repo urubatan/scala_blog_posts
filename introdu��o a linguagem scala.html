@@ -1,5 +1,5 @@
 <center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
-Este é o primeiro de uma sequencia de posts que vou escrever sobre a linguagem <a href="http://www.scala-lang.org">Scala</a>, e não vou escrever sobre Scala por que sou um expert na linguagem, bem lonje disto, estou aprendendo scala agora como comentei no post <a href="http://www.urubatan.com.br/o-que-eu-gostei-na-linguagem-scala/">"O que eu gostei na linguagm Scala"</a>, e como há bastante tempo não tenho paciência para escrever posts básicos sobre Java e já existem muitos posts básicos sobre Ruby, resolvi aproveitar emquanto Scala é novidade para mim e escrever um tipo de "Scala for Dummies".
+Este é o primeiro de uma série de posts que vou escrever sobre a linguagem <a href="http://www.scala-lang.org">Scala</a>, e não vou escrever sobre Scala por que sou um expert na linguagem, bem lonje disto, estou aprendendo scala agora como comentei no post <a href="http://www.urubatan.com.br/o-que-eu-gostei-na-linguagem-scala/">"O que eu gostei na linguagm Scala"</a>, e como há bastante tempo não tenho paciência para escrever posts básicos sobre Java e já existem muitos posts básicos sobre Ruby, resolvi aproveitar emquanto Scala é novidade para mim e escrever um tipo de "Scala for Dummies".
 
 Vou testar tudo o que eu escrever, mas se eu falar alguma besteira e alguem ai perceber, por favor me avisem, é só deixar um comentário que vou corrigir o mais rápido possível.
 
@@ -129,7 +129,45 @@ Na linha 1 podemos ver variáveis sendo declaradas na definição da classe, ist
 
 Na linha 3 podemos ver a sobreescrita do método toString utilizando "expression as method body", todos os comandos em scala são expressões, poderiamos colocar apenas uma string fixa ali que funcionaria normalmente, e qualquer expressão pode ser utilizada como o código de um método ou função, isto permite que implementemos métodos delegados assim:
 
-{{samples/006_stack.scala}}
+{{samples/006_charcounter.scala}}
 
+Na linha 2, definimos como corpo do método getLen a expressão "lst.length".
 
+<h2>Herança e function as a value</h2>
 
+Scala como a maior parte das linguagens orientadas a objeto suporta Herança, classes abstratas, veja este exemplo simples para deixar a idéia um pouco mais clara.
+
+{{samples/007_simpleinheritance.scala}}
+
+Na linha 1 declaramos uma classe abstrata de nome Person, nesta classe definimos um método também abstrato na linha 3, percebam que terminei a linha com um ";", ele é opcional, mas como não foi definido o corpo do método eu acho mais "bonito" colocar ele ali.
+
+Nas linhas 6 a 8, e 10 a 12, definimos sub classes para Person e sobre escrevemos o método abstrato, definindo um corpo para o mesmo. A aplicação das linhas 14 a 20 é apenas um exemplo.
+
+Outra coisa que pode ser vista neste exemplo é que as classes Person, Student e Worker foram declaradas com a palavra chave "class" e PersonApp com "object", "object" é a forma de se declarar uma classe estática em Scala, a palavra chave static não existe, e para ter uma melhor orientação a objeto, não existem métodos ou variáveis de classe, no caso da palavra chave "object" o que o compilador faz é criar uma classe, e declarar um objeto singleton da mesma classe, o nome real da classe após compilado com o "scalac" vai ser "PersonApp$" e o objeto singleton da classe vai ter o nome declarado, depois disto você pode acessar o objeto como qualquer outro objeto Scala.
+
+<h2>Resumo do primeiro artigo</h2>
+
+<ul>
+  <li>Scala é uma linguagem de paradigma misto OO/Funcional</li>
+  <li>Nasceu para ser um Java melhor ue o Java, mas hoje roda também em .NET</li>
+  <li>É uma linguagem de tipagem forte e estática</li>
+  <li><b>scala</b> é o interpretador e <b>scalac</b> o compilador</li>
+  <li><b>var</b> define uma variável, <b>val</b> define uma constante</li>
+  <li>Tudo é um objeto</li>
+  <li>Tudo é uma expressão, e expressões podem ser o corpo de um método</li>
+  <li><b>class</b> define uma classe normal, <b>object</b> define um objeto singleton com classe própria</li>
+  <li>Scala é muito legal, mas se você só leu isto sobre scala até agora ainda não deve concordar comigo</li>
+</ul>
+
+<h2>Próximos passos</h2>
+
+Vou tentar manter a média de um artigo por semana desta série sobre Scala, no próximo vou explorar um pouco mais a sintaxe da linguagem e o "Type System" utilizado, brincar um pouco com traits, ...
+
+Se você não quiser esperar, segue uma pequena lista de links sobre a linguagem.
+<ul>
+  <li><a href="http://www.scala-lang.org">Scala-Lang</a></li>
+  <li><a href="http://programming-scala.labs.oreilly.com">Programming Scala - livro para review no orreily, não sei até quando vai estar disponível</a></li>
+  <li><a href="http://liftweb.net/">Framework para desenvolvimento web desenvolvido em Scala</a></li>
+</ul>
+
+Até a próxima semana, qualquer opinião, dúvida ou critica favor deixar um comentário neste post, mas fique avisado que as criticas serão lidas mas podem não ser publicadas :D
