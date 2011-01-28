@@ -1,0 +1,58 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+Seguindo com o assunto sobre a <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">linguagem Scala</a>, vamos falar um pouco sobre Orientação a Objetos em Scala.
+
+Como comentei no post anterior, tudo em scala é um objeto, não existem tipos primitivos, e bla bla bla.
+
+Mas o importante é entender quais são os fundamentos da orientação a objetos em Scala, então dê uma olhada nesta pequena lista que vou explicar os items da lista neste post.
+
+<ul>
+  <li>Tudo é um objeto, não existem tipos primitivos</li>
+  <li>Classes suportam herança simples</li>
+  <li>The Open/Closed principle</li>
+  <li>Não existem interfaces, mas sim Traits</li>
+  <li>Traits podem ser utilizados para compor o comportamento de uma classe</li>
+  <li>É possível extender classes com Traits estaticamente ou dinâmicamente</li>
+</ul>
+
+Agora vou explicar cada um destes itens com exemplos, tentando passar uma idéia melhor do suporte a OO da linguagem.
+
+<h2>Tudo é um objeto, não existem tipos primitivos</h2>
+
+Em scala, tudo é objeto, números são objetos, strings são objetos, funções são objetos, classes são objetos.
+Mas diferente do Java, nem tudo é descendente de Object, mas tudo é descendente da classe Any, esta classe tem dois descendentes diretos AnyVal e AnyRef.
+
+Scala pode rodar em um ambiente Java ou .NET, se scala estiver rodando em um ambiente Java, então AnyRef corresponde a java.lang.Object e se em um ambiente .NET corresponde a object (System.Object).
+
+scala.AnyVal tem os seguintes descendentes:
+<ul>
+  <li>scala.Double</li>
+  <li>scala.Float</li>
+  <li>scala.Long</li>
+  <li>scala.Int</li>
+  <li>scala.Short</li>
+  <li>scala.Byte</li>
+  <li>scala.Unit</li>
+  <li>scala.Boolean</li>
+  <li>scala.Char</li>
+</ul>
+
+Sabendo que scala.Unit é descendente de AnyVal, e que toda função ou bloco de código em Scala é um Unit (isto é informação nova) podemos dizer que toda função, método ou bloco de código é um AnyVal também.
+Para uma idéia mais clara, execute o seguinte script Scala:
+{{samples/008_objects.scala}}
+
+<h2>Classes suportam herança simples</h2>
+
+Scala como o Java, não suporta Herança multipla, e para definir isto em scala também é bem parecido, veja o exemplo abaixo:
+
+
+<h2>The Open/Closed principle</h2>
+
+<h2>Não existem interfaces, mas sim Traits</h2>
+Scala não tem interfaces
+
+<h2>Traits podem ser utilizados para compor o comportamento de uma classe</h2>
+
+<h2>É possível extender classes com Traits estaticamente ou dinâmicamente</h2>
+
+
+
