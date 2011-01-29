@@ -40,19 +40,68 @@ Sabendo que scala.Unit é descendente de AnyVal, e que toda função ou bloco de
 Para uma idéia mais clara, execute o seguinte script Scala:
 {{samples/008_objects.scala}}
 
+Uma imagem que pode ajudar um pouco a entender a hierarquia de classes da linguagem eu peguei da documentação da API Scala do site oficial.
+<center><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/classhierarchy.png" alt="Hierarquia de classes Scala"/></center>
+
+Uma coisa bastante interessante que vi nesta imagem, e que eu ainda não tinha percebido é que não se pode atribuir Null para uma variável do tipo Int, mas pode-se atribuir Nothing para uma variável do tipo String, passarei a utilizar muito mais Nothing do que Null no meu código Scala :D
+
 <h2>Classes suportam herança simples</h2>
 
 Scala como o Java, não suporta Herança multipla, e para definir isto em scala também é bem parecido, veja o exemplo abaixo:
 
+{{samples/009_heranca.scala}}
+
+Na linha 4 a classe Dog extende a classe Animal utilizando a palavra chave "extends".
+Na linha 9 Person também extende Animal.
+Na linha 13 Student extende Person propagando os parâmetros recebidos no contrutor.
+
+Quando uma classe extende outra, ela herda todo o comportamento da classe pai, todos os métodos não privados que estavam definidos são acessíveis pela classe filha, e a classe filha pode alterar o comportamento de um destes métodos sobreescrevendo o mesmo, como foi feito na linha 11 com a palavra chave "override" para mudar o comportamento do método "toString";
+
+Uma das vantagens de uma linguagem suportar herança, é que ela também suporta polimorfismo, ou seja, se um método espera um Animal como parâmetro, podemos passar qualquer tipo de animal para este método, inclusive um Student que "implementa" todo o comportamento de Animal.
+
+Um outro recurso interessante é a utilização de classes abstratas, como no caso de Animal da linha 1 que é uma classe abstrata pois foi definida com a utilização da palavra chave "abstract", e tem um método abstrato "breathe", um método abstrato é um método que ainda não foi implementado, que deve ser implementado nas classes filhas, uma classe abstrata pode ter métodos abstratos e métodos concretos, métodos concretos são métodos comuns que tem a sua implementação já definida. Quando uma classe extende uma classe abstrata ela precisa implementar todos os métodos abstratos da classe pai, o também ser declarada como abstrata.
 
 <h2>The Open/Closed principle</h2>
 
-<h2>Não existem interfaces, mas sim Traits</h2>
-Scala não tem interfaces
+Muitas linguagens orientadas a objeto adotam o principio Aberto/Fechado, a idéia básica é que entidades de software (classes, modulos, funções, ...) devem ser abertas para expansão mas fechadas para alteração.
 
-<h2>Traits podem ser utilizados para compor o comportamento de uma classe</h2>
+Em resumo, isto quer dizer que scala não suporta classes abertas, não é possível alterar uma classe sem alterar o código fonte da mesma, exatamente como em java ou c#. mas é possível extender o comportamento destas classes em sub classes, a diferença é que como vamos ver na próxima sessão, em scala é possível fazer isto no momento em que se cria uma instância da classe, criando dinâmicamente uma subclasse utilizando traits para isto.
 
-<h2>É possível extender classes com Traits estaticamente ou dinâmicamente</h2>
+<h2>Traits e Tipos estruturais</h2>
 
+Scala não tem interfaces, mas para desempenhar a funcão das interfaces com maestria, scala possui traits.
 
+Traits, diferente de interfaces podem ter implementações padrão para os métodos definidos, podem inclusive implementar todos os métodos definidos.
 
+Com traits é possível ter diversas das vantagens da herança multipla, sem ter a maior parte dos problemas desta.
+
+A palavra "trait" na computação significa uma coleção de métodos, utilizados como um modelo conceitual simples para estruturar programas orientados a objetos.
+Em resumo traits são uma coleção de métodos, abstratos ou não, que podem ser utilizados como a definição de um contrato (neste caso suprindo a falta de interfaces), e também podem ser utilizados para compor classes.
+
+Scala não tem herança multipla, um objeto pode herdar apenas de uma classe, mas pode anexar muitos traits. Veja no exemplo abaixo:
+
+{{samples/010_traits.scala}}
+
+Entre as linhas 1 e 3 estamos definindo um trait para algo que pode voar.
+Nas linhas 4 a 6 estamos definindo outro trait para algo que pode pular.
+Nas linhas 7 a 9 definimos outro trait para algo que pode andar.
+Entre as linhas 10 e 12, definimos a classe animal, que pode respirar.
+Na linha 13 definimos a classe Dog que extende Animal e inclui o trait Jumper, ou seja, o cachorro respira e pula.
+Na linha 15 definimos a classe Bird que extende Animal também, e inclui os traits Jumper e Flyer, ou seja, o passaro voa, pula e respira.
+Na linha 17 definimos a classe Airplane que extende o trait Flyer ou seja, o avião pode voar.
+Entre as linhas 19 e 30 temos uma aplicação que instancia todas as classes definidas e chama os métodos disponíveis, mas se prestarmos atenção na linha 20, estamos adicionando mais um trait a instância de Dog recem criada, no caso, apenas esta instância da classe, também inclui o trait Walker, ou seja, este cachorro pode também andar, diferente dos outros.
+
+Outra coisa interessante que podemos fazer, é definir um trait anonimo na declaração de um método, para indicar que aquele método precisa de um parâmetro que possua o método X, como uma espécie de duck typing estaticamente tipado, este é um dos recursos que eu acho mais interessantes da linguagem. 
+Me acostumei com o duck typing do Ruby e sinto muita falta quando programo em Java ou C#, agora com Scala é possível ter a verificação de tipos pelo compilador, e a flexibilidade do Duck Typing. Veja o exemplo:
+
+{{samples/011_ducktyping.scala}}
+
+Na verdade, este recurso não se chama Trait, e sim structural type, o método inTheForest definido na linha 7, vai aceitar qualquer objeto como parâmetro que tenha o método quack, sem parâmetros e que retorne Unit (similar a "void" em Java).
+Se por acaso você estiver utilizando o mesmo tipo estrutural em muitos lugares, você pode defini-lo em apenas um lugar e reutiliza-lo como no exemplo abaixo:
+
+{{samples/012_structuraltypes.scala}}
+
+Acho que sobre orientação a objetos em Scala, e composição de classes era isto, o próximo post sobre scala vai falar um pouco sobre closures em Scala, e depois podemos voltar para classes e falar sobre parametrização de tipos antes de entrar em programação funcional.
+Temos muitos posts sobre Scala pela frente, então sugiro que se vocês não estiverem gostando, me avisem para que eu possa mudar de assunto :D
+Como sempre, quaisquer dúvidas, sugestões ou criticas, podem deixar nos comentários.
+Espero que estejam começando a gostar da linguagem, mesmo ainda não tendo visto alguns dos recursos mais divertidos.
