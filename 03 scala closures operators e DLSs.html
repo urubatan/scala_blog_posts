@@ -1,0 +1,61 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+Depois de uma breve <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">introdução a linguagem Scala</a>, e de falar sobre <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">orientação a objetos em Scala</a>, agora vamos falar um pouquinho de closures em Scala, mas não apenas de closures, de blocos de código, closures automáticas, e vamos começar a falar de alguns dos recursos funcionais da linguagem, como Higher-Order functions, funções como valor e passar funções como parâmetros para outras funções.
+Veja bem, este post não vai ser uma introdução a programação funcional em scala, pretendo fazer isto mais adiante, mas aproveitando o gancho das closures, como alguns dos conceitos do que vou falar são bem parecidos, já vamos também estudar alguns dos conceitos básicos que permitem programação funcional com a linguagem scala.
+
+Então sem mais delongas, vamos a alguns conceitos:
+<strong>Closure</strong> é uma função de primeira classe com variáveis livres, ligadas ao contexto onde a closure foi criada.
+Lendo esta definição, já que closure é uma função de primeira classe, quer dizer que Scala possui funções de primeira classe.
+<strong>Funções de primeira classe</strong> são funções tratadas como objetos, que podem ser armazenados em estruturas de dados, ser passados como parâmetros para outras funções e podem ser o valor de retorno para outras funções.
+Lendo esta definição de funções de primeira classe, ou first-class functions, uma parte desta definição me lembra da definição de Higher-Order functions, veja abaixo:
+<strong>Higher-Order Functions</strong> são funções que recebem uma ou mais funções como parâmetros e/ou retornam uma função.
+Juntando tudo isto, e partindo do principio que Scala suporta Closures podemos também inferir que scala suporta higher-order functions, uma caracteristica bastante comum de linguagens de programação funcionais.
+
+<h2>Voltando as Closures</h2>
+Vamos começar com um exemplo, para facilitar as expicações:
+
+{{samples/013_closure.scala}}
+
+Na linha 2, o método printResult precisa receber como parâmetro uma função que receba um Int como parâmetro e retorne qualquer coisa.
+Na linha 3 chamamos esta função passando 5 como parâmetro e passamos o resultado dela para o println.
+Se você lêr novamente a definição de higher-order function, esta função definida na linha 2 é um exemplo bem simples de uma, até agora temos uma higher-order function, mas nenhuma closure.
+
+Na linha 7, definimos uma variável "funcParam" que aponta para uma função anonima, que recebe um Int e retorna um Int.
+Esta é uma função de primeira classe, estamos armazenando uma função em uma variável, que poderia ser parte de uma estrutura de dados, e na linha 8, estamos passando esta função armazenada em uma variável como parâmetro para outra função.
+Mas o que define esta função anonima declarada na linha 7 como uma closure, alem de ser uma função de primeira classe, é que ela acessa uma variável local do método onde ela foi definida, dentro da closure, é armazenada uma referência para a variável definida no mesmo contexto onde esta closure foi criada, e quando a closure é executada ela lê o valor atual da variável, e não o valor que esta variável tinha quando a closure foi criada. Ou seja, mesmo sendo executada em um lugar totalmente diferente, a closure é executada no contexto onde ela foi declarada.
+
+Isto pode parecer um pouco complexo, mas com o tempo vai ficando bem simples.
+
+<h2>Criação atomática de Closures</h2>
+
+Scala pode criar closures automaticamente quando a assinatura do método pede uma closure como parâmetro, e como já vimos antes que qualquer método pode ser utilizado como um infix operator, vamos juntar estas duas informações, e re-criar o loop while do Java. Veja o exemplo abaixo:
+
+{{samples/014_whileloop.scala}}
+
+Na linha 1, definimos o método "whileLoop", este método recebe dois parâmetros, o primeiro parâmetro é uma função que não tem parâmetros e retorna um valor boolean, a forma de declarar é um caso especial do que acabamos de ver sobre funções anonimas, se a função anonima não precisa de parâmetros podemos omitir os parenteses e utilizar a sintaxe ": => <tipo retorno>", como visto em "(cond: => Boolean)", e o segundo parâmetro é uma função sem parâmetros e sem retorno, e a função whileLoop também não tem retorno (ambas retornam Unit que pode ser um bloco de código ou então o equivalente a void no java).
+Dentro da função, se "cond" retornar true, chama body, e chama o método novamente, como ambos "cond" e "body" são closures, e tem acesso as variáveis declaradas no escopo onde foram criadas, depois de executar body uma vez, o retorno de cond pode ter sido alterado.
+Se olharmos entre as linhas 7 e 11, "cond" é a expressão "(1 > 0)" e body o bloco de código que segue, ambas as closures foram passadas como parâmetro para o método whileLoop.
+
+Podemos brincar um pouco mais com a idéia de que qualquer método pode ser  utilizado como um infix ou postfix operator, e com a criação de closres dinâmicas criando um loop um pouco mais flexível, vamos analisar o seguinte exemplo:
+
+{{samples/015_loop.scala}}
+
+Entre as linhas 1 e 6, definimos a classe LoopUnlessCond que recebe uma função sem parâmetros e que retorna Unit como parâmetro no construtor.
+Nesta classe, entre as linhas 2 e 5 definimos um método nesta classe, que recebe uma função sem parâmetros e que retorna Boolean como parâmetro, neste método executamos o método "body" recebido como parâmetro no construtor da classe, e logo depois, se cond retornar false, executamos o método unless novamente.
+Mais adiante na linha 8 definimos um método chamado "loop" que recebe como parâmetro uma função sem parâmetros que retorna Unit, este método retorna uma nova instância da classe "LoopUnlessCond" que acabamos de criar, e passa o método recebido como parâmetro para o contrutor desta classe.
+Na linha 11, chamamos o método loop, passando a closure definida nas linhas 12 e 13. Como o retorno do método "loop" é uma instância da classe "LoopUnlessCond", na linha 14 podemos chamar o método unless definido nesta classe, passando mais uma closure como parâmetro para este método.
+Juntando  a possibilidade de utilizar qualquer método como um infix ou postfix operator, e a criação atomática de closures, podemos ter bastante flexibilidade na criação de pequenas DLSs, e como estas são apenas classes e métodos Scala, podemos empacotalas em bibliotecas e distribuílas com bastante facilidade.
+
+Vamos dar uma olhada no último exemplo deste post:
+
+{{samples/016_loop.scala}}
+
+Entre as linhas 1 e 4, criamos um objeto com uma única variável armazenando uma instância de uma excessão (BreakException).
+Na linha 5 criamos um método "break" que a única responsabilidade é disparar uma excessão do tipo "BreakException" utilizando aquela variável do objeto definido.
+Entre as linhas 7 e 14 criamos um método "loop" que recebe um bloco de código que retorna Unit como parâmetro, este método fica chamando o bloco até que uma excessão do tipo BreakException seja disparada.
+E para terminar, entre as linhas 17 e 21 utilizamos esta nova construção da linguagem que acabamos de criar.
+
+Como podemos ver neste post, a combinação de closures e métodos como operadores é mais do que o suficiente para criarmos novas construções para a linguagem, e como estas novas construções não passam se classes e métodos Scala, podemos compartilha-los entre projetos como bibliotecas ".jar" por exemplo.
+Por enquanto estamos criando construções bastante simples, no próximo artigo vamos estudar um pouco sobre tipos genéricos em Scala, depois vamos estudar um pouco sobre programação funcional, mas em um dos próximos artigos vamos voltar a estudar sobre a criação de DSLs mais complexas em Scala.
+Espero que agora vocês estejam começando a gostar um pouco mais da linguagem.
+
+Como sempre, se tiverem dúvidas, comentários, sugestões ou criticas, por favor deixem nos comentários.
