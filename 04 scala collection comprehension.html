@@ -1,0 +1,163 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+Agora que já aprendemos o <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">básico da linguagem Scala</a>, aprendemos um pouco sobre o suporte da linguagem a <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">orientação a objetos</a>, e um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures e operators em Scala</a>. Agora vamos aprender um pouco sobre coleções em Scala, e como estas coleções estão realmente integradas na linguagem, com contrutores facilitados, e vamos também ver como a possibilidade de utilizar métodos como operadores pode se integrar perfeitamente a todos estes recursos na linguagem.
+
+<h2>Listas</h2>
+
+Em scala, instanciar listas de diversos tipos é bastante fácil, principalmente por causa dos factory methods definidos como objetos estáticos no pacote scala, vamos ver alguns exemplos.
+
+{{samples/017_lists.scala}}
+
+Podemos ver na linha 1 a utilização do factory method "List" para criar uma instância de List[Int]
+Na linha 2, estamos utilizando o operador :: também chamado de "cons" para concatenar itens no início de uma linha, este operador utiliza um truque da linguagem scala, todos os operadores que começam com ":" são considerados operadores do elemento a direita, e não do elemento a esquerda como normalmente acontece, deste forma, o método foi inicialmente chamado em "Nil", que também representa uma lista vazia, e apartir dai o método foi chamado na lista criada.
+Na linha 3, utilizamos o mesmo operador para criar uma lista maior, acontece a mesma coisa que na linha anterior, mas neste ponto já é claro  que estamos concatenando duas listas.
+Nas linhas 4 e 5 estamos utilizando os métodos "until" e "to" da classe "Int" para criar dois objetos do tipo "Range",  coloquei  estes intervalos neste exemplo por que  eles compartiham muitas das propriedades de List que quero mostrar mais adiante, o método until não inclui o último elemento na lista, o método to sin.
+As linhas 7 a 12 imprimem o resultado no console quando executamos o programa como um script Scala.
+
+Podemos fazer algumas coisas interessantes com listas, olhem estes exemplos de "for" em Scala.
+
+{{samples/018_for.scala}}
+
+O que esta sendo feito neste "for", é atribuimos a "i" um "Range" de 1 a 10, e o for só vai executar o bloco correspondente quando o número for par, ou seja, esta linha de código imprime todos os números pares.
+
+Para tirar mais vantagens das listas, precisamos conhecer os métodos disponíveis, vamos dar uma olhada na tabela abaixo:
+<table border="1" width="100%">
+  <TR>
+    <TH>Método</TH>
+    <TH>O que ele faz</TH>
+  </tr>
+  <tr>
+    <td><code>List()</code></td>
+    <td>Cria uma instância vazia de <code>List</code></td>
+  </tr>
+  <tr>
+    <td><code>Nil</code></td>
+    <td>Cria uma instância vazia de <code>List</code></td>
+  </tr>
+  <tr>
+    <td><code>List("Cool", "tools", "rule")</code></td>
+    <td>Cria uma nova instância de <code>List[String]</code> com os valores <code>"Cool"</code>, <code>"tools"</code>, e <code>"rule"</code></td>
+  </tr>
+  <tr>
+    <td><code>val thrill = "Will" :: "fill" :: "until" :: Nil</code></td>
+    <td>Cria uma nova <code>List[String]</code> com os valores <code>"Will"</code>, <code>"fill"</code>, e <code>"until"</code></td>
+  </tr>
+  <tr>
+    <td><code>thrill(2)</code></td>
+    
+    <td>Retorna o segundo elemento (com baze zero) da lista <code>thrill</code> (retorna <code>"until"</code>)</td>
+  </tr>
+  <tr>
+    <td><code>thrill.count(s =&gt; s.length == 4)</code></td>
+    <td>Conta quantas Strings na lista tem comprimento igual a 4 (retorna 2)</td>
+  </tr>
+  <tr>
+    <td><code>thrill.drop(2)</code></td>
+    <td>Retorna uma nova lista sem os dois primeiros itens</td>
+  </tr>
+  <tr>
+    <td><code>thrill.dropRight(2)</code></td>
+    <td>Retorna uma nova lista sem od sois últimos itens</td>
+  </tr>
+  <tr>
+    <td><code>thrill.exists(s =&gt; s == "until")</code></td>
+    <td>Verifica se existe na lista um elemento igual a "until"</td>
+  </tr>
+  <tr>
+    <td><code>thrill.filter(s =&gt; s.length == 4)</code></td>
+    <td>Retorna uma nova lista contendo apenas os elementos com tamanho igual a 4</td>
+  </tr>
+  <tr>
+    <td><code>thrill.forall(s =&gt; s.endsWith("l"))</code></td>
+    <td>Verifica se todos os elementos na lista terminam com a letra "l"(retorna <code>true</code>)</td>
+  </tr>
+  <tr>
+    <td><code>thrill.foreach(s =&gt; print(s))</code></td>
+    <td>Executa o método "print" para cada um dos itens da lista</td>
+  </tr>
+  <tr>
+    <td><code>thrill.foreach(print)</code></td>
+    <td>O mesmo que o anterior, mas de forma mais concisa, passa cada um dos elementos da lista como parâmetro para o método print</td>
+  </tr>
+  <tr>
+    <td><code>thrill.head</code></td>
+    <td>Retorna o primeiro elemento da lista</td>
+  </tr>
+  <tr>
+    <td><code>thrill.init</code></td>
+    <td>Retorna uma lista com todos os elementos menos o último</td>
+  </tr>
+  <tr>
+    <td><code>thrill.isEmpty</code></td>
+    <td>Verifica se a lista esta vazia</td>
+  </tr>
+  <tr>
+    <td><code>thrill.last</code></td>
+    <td>Retorna o último elemento da lista</td>
+  </tr>
+  <tr>
+    <td><code>thrill.length</code></td>
+    <td>Retorna o número de elementos da lista</td>
+  </tr>
+  <tr>
+    <td><code>thrill.map(s =&gt; s + "y")</code></td>
+    <td>Retorna uma nova lista contendo os itens resultantes da operação especificada, no caso, adicionar "y" a cada um dos itens da lista</td>
+  </tr>
+  <tr>
+    <td><code>thrill.remove(s =&gt; s.length == 4)</code></td>
+    <td>Retorna uma nova lista contendo todos da primeira, exceto os que tem o comprimento 4</td>
+  </tr>
+  <tr>
+    <td><code>thrill.reverse</code></td>
+    <td>Retorna uma nova lista com a ordem inversa</td>
+  </tr>
+  <tr>
+    <td><code>thrill.
+      sort((s, t) =&gt; 
+      s.charAt(0).toLowerCase &lt;
+      t.charAt(0).toLowerCase)</code></td>
+    <td>Retorna uma nova lista ordenada alfabeticamente consideando apenas a primeira letra de cada palavra</td>
+    </tr>
+    <tr>
+      <td><code>thrill.tail</code></td>
+      <td>Retorna uma nova lista contendo todos menos o primeiro elemento</td>
+    </tr>
+  </table>
+
+Com estes métodos, junto com os outros recursos da linguagem, podemos ver por que listas são uma das estruturas de dados mais importantes na linguagem Scala.
+
+<h2>Mapas</h2>
+
+Mapas em scala diferentes das listas que são sempre imutáveis, podem ser mutáveis ou imutáveis, no exemplo abaixo podemos ver a utilização de um mapa mutável.
+
+{{samples/019_maps.scala}}
+
+Podemos também criar mapas imutáveis, utilizando a sintaxe simplificada da linguagem como podemos ver no exemplo abaixo.
+
+{{samples/020_maps.scala}}
+
+Mapas podem ser bastante úteis também, mas no código Scala que eu lí até hoje ví muito poucos mapas.
+
+Uma coisa a se notar, é que o contrutor de um mapa em scala recebe uma lista de tuples de dois elementos, e que a sintaxe "KEY -> VALUE" é apenas açucar sintático para (KEY, VALUE), e que poderiamos ter feito o exemplo anterior da seguinte forma:
+
+{{samples/021_maps.scala}}
+
+A classe Map também tem diversos métodos úteis, mas como eu não costumo ver muitos mapas no código, não acho que valha a pena adicionar mais uma tabela aqui neste post, mas vocês podem dar uma olhada na documentação da <a href="http://www.scala-lang.org/api/current/scala/collection/Map.html">classe Map na API online</a> da linguagem.
+
+<h2>Observações gerais</h2>
+
+Uma das coisas mais importantes neste post é perceber que a grande maior parte dos métodos das listas recebe Closures como parâmetro, ou seja, o conhecimento adquirido até agora tem que ser utilizado em conjunto, o método List.filter recebe uma função como parâmetro, esta função por sua vez tem um parâmetro, e quando ela retorna true o elemento atual passa para a nova lista, quando retorna false o elemento é excluido da nova lista.
+
+Outra coisa importante é que qualquer tipo de coleção ou iterator pode ser utilizado em um for, isto inclui Mapas, cada iteração do loop vai trabalhar com um Tuple.
+
+No próximo post sobre Scala vamos voltar a falar sobre programação funcional, e logo depois sobre tipos parametrizados, upper e lower type bounds e coisas do gênero.
+
+Como sempre, se tiver dúvidas, sugestões ou críticas, por favor deixe um comentário.
+
+E para incentivar os comentários agora, deixo algumas perguntas:
+<ul>
+  <li>você já esta utilizando Scala? Pensa em usar?</li>
+  <li>Esta feliz com a linguagem Java?</li> 
+  <li>Gostarai de alguns dos recursos da linguagem Scala na linguagem Java?</li> 
+  <li>Gostaria de utilizar Scala junto com outras bibliotecas Java?</li> 
+  <li>Sabe como fazer isto? Tem dúvidas?</li>
+</ul>
