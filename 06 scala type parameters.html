@@ -1,0 +1,55 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+
+Este é o sexto post da série sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, e na semana passada sobre <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programação Funcional em Scala</a>. Outra coisa bastante comum em todo código Scala que vejo por ai são Type Parameters, que em Scala podem assumir mais de uma forma, e também precisamos entender como funcionam upper e lower bounds, ou limites superiores e inferiores.
+
+Vamos começar com alguns exemplos, e vamos analisar os códigos para tentar deixar claro como isto funciona e como podemos utilizar este recurso bastante poderoso a nosso favor.
+
+(este código não é executável, é apenas um exemplo)
+{{samples/022_typeparamsbasic.scala}}
+
+Neste exemplo, podemos ver um exemplo simples da declaração de uma classe parametrizável, e também podemos ver um problema gráve gerado por esta parametrização, o código das linhas 7 e 8, é válido, já que String é subclasse de Any, mas como não existe nenhuma verificação em tempo de execução, teriamos problemas na linha 9, onde um objeto diferente de string seria colocado no Array, o java resolve este problema com uma verificação em tempo de execução, o que fere um pouco a idéia de tipagem estática da linguagem, em scala é possível mudar a declaração da classe para melhorar um pouco esta verificação, adicionando um pouco de variância na declaração da classe e do método ...
+
+(este código não é executável, é apenas um exemplo)
+{{samples/032_typeparams2.scala}}
+
+A notação A+ diz que o tipo A só deve ser utilizado em posições covariantes, e na nova assinatura do método update, que agora é um método polimorfico, não é mais utilizado o tipo A, agora utilizamos o tipo B, que é definido na própria assinatura do método, como sendo um sub tipo de A, assim resolvendo o problema de inserir objetos que não são strings, o método só vai aceitar strings ou seus sub tipos.
+
+Scala possui as seguintes notações para variância e limites superiores e inferiores de tipos:
+<table>
+  <tr>
+    <th>Notação</th>
+    <th>Explicação</th>
+  </tr>
+  <tr>
+    <td>A+</td>
+    <td>A só pode ser utilizado em posições de covariância</td>
+  </tr>
+  <tr>
+    <td>A-</td>
+    <td>A só pode ser utilizado em posiçÕes de contravariância</td>
+  </tr>
+  <tr>
+    <td>B &lt;: A</td>
+    <td>B é menor ou igual a A, ou seja, B é A ou um de seus subtipos</td>
+  </tr>
+  <tr>
+    <td>B &gt;: A</td>
+    <td>B é maior ou igual a A, ou seja, B é A ou um super tipo deste</td>
+  </tr>
+  <tr>
+    <td>B &lt;: A &gt;: C</td>
+    <td>B é um subtipo de A que é um super tipo de C</td>
+  </tr>
+</table>
+Isto torna as coisas bastante flexíveis para definição de tipos e de parâmetros para métodos, permitindo que recebamos apenas o que sabemos como utilizar.
+Mas tenham cuidado com os métodos polimorficos, eles são poderosos mas podem deixar o código um tanto quanto difícil de ser lido.
+
+Vamso dar uma olhada em um exemplo um pouco mais complexo agora, retirado da documentação da linguagem e explicar os detalhes dele.
+
+{{samples/033_typeparams3.scala}}
+
+Na linha 2, definimos que o parâmetro do método push vai ser qualquer super tipo do tipo inicial, basicamente isto faz o método aceitar qualquer coisa, por que a declaração vai até Any, neste método é criada uma nova classe, descendente de Stack, que sobre escreve os métodos "top", "pop" e "toString".
+Na linha 13 criamos uma nova instância de Stack[Any], em que o método push vai ser declarado como push(Any), já que não existe um super tipo de Any, e push(Any) vai aceitar qualquer valor como parâmetro.
+
+Bom, não sei se neste artigo ajudei ou atrapalhei, mas se tiverem dúvidas, criticas ou sugestões, como sempre é só deixar um comentário que vou tentar responder o mais rápido possível.
+

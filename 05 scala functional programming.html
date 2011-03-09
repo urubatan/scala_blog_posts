@@ -1,0 +1,102 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+
+Este é o quinto post da série sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, agora vamso começar a entender por que eu gostei da linguagem scala, vamos entender um pouco mais sobre programação funcional, e como isto pode ajudar a escrever um código mais limpo e com uma menor probabilidade de bugs.
+
+Diferente da maior parte dos artigos, vamos começar com um pouco de teoria desta vez:
+<h2>Programação Funcional</h2>
+Descrição tirada da <a href="http://pt.wikipedia.org/wiki/Programa%C3%A7%C3%A3o_funcional">Wikipedia</a>.
+<blockquote>
+   Programação funcional é um paradigma de programação que trata a computação como uma avaliação de funções matemáticas e que evita estados ou dados mutáveis. Ela enfatiza a aplicação de funções, em contraste da programação imperativa, que enfatiza mudanças no estado do programa[1].
+Uma função, neste sentido, pode ter ou não ter parâmetros e um simples valor de retorno. Os parâmetros são os valores de entrada da função, e o valor de retorno é o resultado da função. A definição de uma função descreve como a função será avaliada em termos de outras funções. Por exemplo, a função f(x) = x2 + 2 é definida em termos de funções de exponenciação e adição. Do mesmo modo, a linguagem deve oferecer funções básicas que não requerem definições adicionais.
+</blockquote>
+OK, e por que isto vai me ajudar em alguma coisa, já que consigo fazer tudo o que quero em linguagens imperativas como o Java?
+
+Simples, ou nem tanto, mas na programação funcional, o comportamento das funções não depende de nenhum estado externo as mesmas, todas as funções são auto contidas, e dados os mesmos parâmetros, retornarão sempre os mesmos resultados.
+Na programação orientada a objetos, que estamos acostumados no Java, a saida de um método de um objeto qualquer, depende do estado daquele objeto, se alguma entidade externa, alterou o estado do objeto sem que percebessemos, o resultado da chamada do método pode não ser o que esperávamos.
+
+Isto também quer dizer, que em uma linguagem puramente funcional, o que não é o caso de Scala, todas as funções são stateless, o que facilita a escrita de código auto contido, e facilita também a escrita de código distribuido, já que todo o código é stateless, posso chamar qualquer função passando os parâmetros corretos em qualquer ponto de um cluster ou em qualquer thread que o resultado vai ser o mesmo, sem os problemas de locking e compartilhamento de memória entre threads que conhecemos tão bem, ou pelo menos aqueles que já tentaram escrever aplicações multi threads conhecem.
+
+<h2>Ficando rico com programação funcional</h2>
+Para que você não diga que ninguem nunca ganhou nada por aprender outros paradigmas de programação, sendo mais especifico, que ninguem nunca ficou rico por aprender programação funcional, vamos conhecer agora dois conceitos bastante usados em programação funcional, e você já deve até ter ouvido falar deles, os conceitos são Map e Reduce, depois de aprender estes conceitos, e entender que eles poderiam ser utilizados em programação distribuida, o google foi criado :D
+
+Mas chega de balela, vamos entender o que quer dizer Map Reduce.
+Em programação funcional, map é simplesmente pegar uma lista, e aplicar em cada um dos itens a função Map, para criar uma nova lista, diferente da primeira, como no exemplo baixo:
+
+{{samples/023_map.scala}}
+
+Como podemos ver no exemplo, a função map pega a primeira lista de valores e transforma em outra, algumas vezes de tipo diferente como foi visto no exemplo das datas, onde a função de Map, transformou as strings em objetos do tipo Date.
+
+Já a função Reduce, pega uma lista e transforma em um item apenas aplicando uma função binária item por item, para quem programa em Ruby, é exatamente a idéia do inject da classe array, em scala no tipo List temos os métodos reduceLeft e reduceRight, que fazem a mesma coisa, mas começando da esquerda para a direita ou da direita para a esquerda respectivamente, como podemos ver no exemplo abaixo, como somar todos os itens de uma lista.
+
+{{samples/024_reduce.scala}}
+
+Agora, vamos imaginar o mesmo exemplo em java, uma linguagem imperativa, para ver se fica claro o que eu tentei dizer antes com a programação funcional ter menor tendencia a gerar erros (pelo fato de ser stateless):
+
+{{samples/025_java_reduce.java}}
+
+Em java, não temos como aplicar uma função a uma lista, então a primeira solução que quase todos os programadores java vão pensar é fazer isto em um loop, para faze em um loop, é necessário armazenar o valor em uma variável externa ao loop para poder guardar o estado, ou pelo menos esta é a primeira solução implementada.
+Ela funciona, agora se vocês perceberem, no exemplo em scala eu chamei duas vezes o reduce para calcular a soma de duas formas diferentes, imaginem o que aconteceria se eu executasse o loop para calcular a soma novamente em java, a probabilidade de eu esquecer de zerar a variável sum antes disto é bem maior que em scala, já que em scala não existe esta necessidade, desta forma, em um exemplo simples como este, já temos uma maior probabilidade de gerar um erro na versão imperativa do que na versão funcional do código.
+
+Mas voltando ao tema de ficar rico, eu não sei como vocês podem ficar ricos, mas os fundadores do google utilizaram a idéia dos  métodos Map e Reduce para criar o maior site de buscas existente hoje, acho que você é uma pessoa inteligente, que esta lendo o que eu escrevi, pode pensar em algo do gênero e ficar rico também, só não esqueça depois de quem deu a idéia :D
+
+<h2>Funções, parâmetros e closures</h2>
+
+Uma coisa importante na programação funcional é que praticamente não existe diferença entre funções e valores, por que uma função pode ser passada como parâmetro para outra função como qualquer outra variável, e da mesma forma que podemos utilizar o literal de um valor para passar o parâmetro para uma função, podemos passar o literal de uma função, ou seja, definir a função diretamente no parâmetro da segunda função.
+
+Um exemplo disto pudemos ver no exemplo de reduce em scala, onde a função sum foi definida na chamada da função reduce na primeira chamada, mas uma coisa que não podemos esquecer, é que uma função não é a mesma coisa que uma closure, sendo que a última não é um recurso puramente funcional, mas ajuda bastante em linguagens multi paradigma como scala.
+Closures guardam um ponteiro para o contexto onde foram definidas, sendo assim, elas já não são mais stateless, mas podem ser de grande ajuda em diversas situações. Apenas para mostrar a diferença, vou fazer um exemplo simples abaixo:
+
+{{samples/026_closure.scala}}
+
+Neste exemplo, diferente do exemplo de "map" anterior, não temos um comportamento puramente funcional, mas temos um comportamento que pode nos ajudar em diversas situações, o comportamento da função multiplier não é o mesmo em todas as situações dados os mesmos parâmetros, ele leva em consideração a variável local "factor" de onde ele foi declarado.
+
+Mas em todas as situações, foram passadas funções como parâmetros para funções, dentro de outra função, não é possível identificar uma função ou uma closure, e uma pode ser parâmetro para a outra sem problema algum.
+
+<h2>Operações básicas de programação funcional</h2>
+
+As operações básicas em linguagens de programação funcional, quando estamos falando de trabalhar com estruturas de dados, são: Traversing, Filtering, Mapping, Reducing e Folding
+Já vimos "map" e "reduce", a operação "fold" é exatamente igual a reduce, com a diferença que ela recebe um parâmetro inicial, e começa a trabalhar sobre este valor, como no exemplo do reduce alterado para usar fold abaixo:
+
+{{samples/027_fold.scala}}
+
+E quanto a traversing, já fazemos isto desde o primeiro exemplo, a função padrão para list traversing em scala é o foreach, que podemos ver no exemplo abaixo:
+
+{{samples/028_foreach.scala}}
+
+Agora só faltou o filtering, que é feito com o método filter, que retorna uma coleção nova, apenas com os itens que retornaram true no método de filtragem, como no exemplo abaixo:
+
+{{samples/029_filter.scala}}
+
+<h2>Funções parcialmente aplicadas</h2>
+
+Um recurso bastante interessante são as funções parcialmente aplicadas, a idéia é que podemos informar parte dos par&ametros de uma função agora, e o resto dos parâmetro depois, vamos ver o exemplo para deixar isto mais claro.
+
+{{samples/030_partfunc.scala}}
+
+Na linha 1, é criada uma função multiply, com 2 parâmetros, o retorno desta função é um parâmetro multiplicado pelo outro, até ai novidade nenhuma, mas lembra-se daquele método "map" das listas, que recebe como parâmetro um método com um só parâmetro? Quero utilizar o "multiply" que acabei de criar como parâmetro para este método, como podemos ver na linha 4, estou informando o primeiro parâmetro, e dizendo que o segundo parâmetro vai ser um integer, e que quem chamar esta função vai informar o valor para este par&ametro, se você executar o script, vera que todos os valores da lista serão multiplicados por 5.
+Outra opção é armazenar a função parcialmente aplicada como uma variável, como podemos ver na linha 6, onde crio o método multi10, que na verdade é uma função parcialmente aplicada informando 10 como o valor do primeiro parâmetro.
+
+
+Este recurso é bastante importante na programação funcional por que permite que utilizemos funções mais complexas de forma mais simples, e a cada vez que passamos uma função como parâmetro, diminuímos a complexidade necessária para chamar a mesma.
+
+<h2>Currying</h2>
+Scala também pode nos ajudar se já soubermos de antemão que vamos utilizar as funções parciaplemte aplicadas, com um recurso interessante chamado currying, a idéia é avisar o compilador que podemos passar parte dos parâmetros, e que isto deve gerar uma outra função, com os parâmetros que faltam, já na declaração, deem uma olhada no exemplo abaixo:
+
+{{samples/031_currying.scala}}
+
+Na declaração da função multiply2, na linha 1, utilizamos parenteses para separar a lista dos parâmetros em vez de virgula como fizemos na maior parte das vezes até agora, quando isto é feito, se chamarmos a função apenas com um dos parâmetros, como fizemos na linha 5, o que o compilador faz é retornar uma função com os parâmetros que faltam, neste caso, exatamente o que a função doIt esperava no segundo parâmetro, uma função que precisa de um parâmetro Int e retorna um Int.
+
+<h2>Tipos funções</h2>
+
+Como sabemos Scala é uma linguagem fortemente tipada, e como podemos receber funções como parâmetro, é importante definir o que esperamos destas funções, qual a sua assinatura.
+
+Como podemos ver no exemplo anterior, na linha 3 quando definimos a função doIt, definimos que o segundo parâmetro, precisava ser uma função, que receberia um valor do tipo Int e retornaria um Int, para fazer isto, a sintaxe é a seguinte:
+(Tipo, Tipo, Tipo) => Tipo
+Onde a lista de tipos dentro dos parenteses define os parâmetros, e o tipo depois do => define o tipo de retorno da função.
+
+<h2>Considerações finais</h2>
+Já aprendemos diversos recursos da linguagem Scala até agora, e neste artigo também um pouco de teoria sobre linguagens funcionais, ainda temos muito o que estudar sobre programação funcional em scala, mas ainda faltam algumas pontas a serem amarradas para entender todos os recursos.
+
+No próximo artigo voltaremos a falar de alguns recursos da orientação a objetos da linguagem, mas acho que vou começar com exemplos um pouco mais complexos para que os textos fiquem mais interessantes.
+
+Como sempre, dúvidas, sugestões e criticas podem utilizar os comentários, se não entenderam alguma coisa, por favor enviem suas perguntas.
