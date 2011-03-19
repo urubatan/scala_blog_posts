@@ -1,0 +1,29 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+
+Este é o sétimo post da série sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programação Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a>. Agora vamos falar um pouco de operadores condicionais, pattern matching, type matching e outras possíveis implementações para programação condicional.
+
+Como eu disse que começaria neste artigo com exemplos mais complexos do que os pedaços de código dos artigos anteriores, a minha proposta para o primeiro exemplo é implementar uma calculadora, provavelmente de mais de uma forma para mostrar várias formas de fazer as mesmas operações, lembrem-se que este vai ser um exemplo simples.
+
+Vamos começar vendo como funciona o pattern matching, este seria o equivalente a um case na linguagem scala, mas um pouco mais flexível do que um case do java, vamos ver no método calculadora abaixo.
+
+{{samples/034_calculator.scala}}
+
+Como eu comentei, o match pode ser utilizado exatamente como o switch/case do java ou do C++, mas ele é um pouco mais flexível do que isto, vamos implementar a mesma calculadora agora, utilizando type matching, e utilizando classes para implementar cada uma das operações da calculadora. Mas antes perceba o "_" na última posição do case, que vai funcionar como uma condição default, o que não for capturado em nenhuma das outras condições cai ali.
+Agora vamos a um exemplo com case classes, como são chamadas em Scala.
+
+{{samples/035_calculator.scala}}
+
+Os case classes são úteis apenas no case de pattern matching, as variáveis de instância podem ser utilizadas diratamente no corpo do case como pode ser visto. Esta é uma boa opção para simular uma enumeração, já que as case classes de uma hierarquia tem que ser obrigatoriamente definidas no mesmo arquivo fonte. Esta é uma estrutura bastante utilizada em programação funcional, mas para quem esta acostumado com programação orientada a objetos esta parece uma abordagem um pouco pobre, por não possuir métodos definidos dentro das classes.
+Como scala é uma linguagem mista, ou seja alem de funcional é também orientada a objetos, podemos utilizar o pattern matching para fazer type matching, como podemos ver no terceiro exemplo de calculadora abaixo.
+
+{{samples/036_calculator.scala}}
+
+Como podemos ver neste exemplo, fazer type matching é bastante simples, claro que poderiamos ter declarado métodos nas case classes e chamado estes métodos, mas esta não é a ideia das mesmas.
+
+As case classes tem a fantagem de poder ser instanciadas sem a utilização do "new" mas tem limitações de todas as classes de uma hierarquia precisarem ser definidas no mesmo arquivo, a idéia delas é serem utilizada como um tipo de enumeração.
+
+Alem do pattern matching, scala ainda tem suporte aos operadores condicionais padrão da maioria das linguagens imperativas, como o if, else, operadores de loop como o do, while, mas o código funcional sempre dapreferencia para a utilização do pattern matching, como no exemplo abaixo.
+
+{{samples/037_calculator.scala}}
+
+Neste exemplo o pattern matching esta sendo utilizado para verificar se o objeto é nulo ou não, a diferença em linhas de código é insignificante, mas a forma de pensar é em diferente de uma linguagem imperativa, no caso do if por exemplo.
