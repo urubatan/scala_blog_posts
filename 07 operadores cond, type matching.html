@@ -2,6 +2,7 @@
 
 Este é o sétimo post da série sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programação Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a>. Agora vamos falar um pouco de operadores condicionais, pattern matching, type matching e outras possíveis implementações para programação condicional.
 
+<h2>Pattern Matching</h2>
 Como eu disse que começaria neste artigo com exemplos mais complexos do que os pedaços de código dos artigos anteriores, a minha proposta para o primeiro exemplo é implementar uma calculadora, provavelmente de mais de uma forma para mostrar várias formas de fazer as mesmas operações, lembrem-se que este vai ser um exemplo simples.
 
 Vamos começar vendo como funciona o pattern matching, este seria o equivalente a um case na linguagem scala, mas um pouco mais flexível do que um case do java, vamos ver no método calculadora abaixo.
@@ -26,4 +27,32 @@ Alem do pattern matching, scala ainda tem suporte aos operadores condicionais pa
 
 {{samples/037_calculator.scala}}
 
-Neste exemplo o pattern matching esta sendo utilizado para verificar se o objeto é nulo ou não, a diferença em linhas de código é insignificante, mas a forma de pensar é em diferente de uma linguagem imperativa, no caso do if por exemplo.
+Neste exemplo o pattern matching esta sendo utilizado para verificar se o objeto é nulo ou não, a diferença em linhas de código é insignificante, mas a forma de pensar é em diferente de uma linguagem imperativa, no caso do if por exemplo. Em linguagens funcionais, assim como em algumas de paradigma misto como o Scala e o Python, é bastante comum a utilização de mapas para tomar decisões sobre qual caminho seguir, ou qual código executar, e é exatamente isto que o pattern matching é, uma forma especializada de mapa utilizado para tomar decisões, inclusive em diversos exemplos encontrados na internet, são misturados tipos de matching diferentes no mesmo bloco mostrando a flexibilidade da ferramenta.
+
+<h2>Uma calculadora gráfica</h2>
+Bom, a calculadora criada até agora não me parece uma aplicação mais complexa do que os métodos soltos que estavamos criando até agora, então vamos fazer exatamente a mesma calculadora, mas com um pouco de código swing, utilizando o pacote java.swing, hoje não vou detalhar muito os recursos, apenas comentar o código do exemplo, mas se vocês se interessarem, deixem comentários que escrevo um artigo só sobre o wrapper scala.swing.
+
+Então vamos ao código, a minha idéia é ter uma calculadora com dois campos de entrada de números, um botão para cada uma das 4 operações básicas, e um label para o resultado.
+O layout vai ser simples, os dois campos de entrada numérica estarão bem no topo da tela, logo abaixo o label para o resultado, e abaixo disto os botões, o usuário deve preencher os dois campos numéricos, e quando um botão de uma das operações for precionado, o resultado da operação devera aparecer no label.
+
+Vamos ver o código necessário para isto, primeiro apenas para o layout, depois eu adiciono a lógica na tela para fazer ela funcionar.
+
+{{samples/038_calculator.scala}}
+
+Este é um exemplo simples dos wrappers scala para Swing, a aplicação básica é criada utilizando-se o objeto SimpleSwingApplication.
+A classe SimpleSwingApplication faz o bootstrap do swing, e facilita o desenvolvimento, ela precisa implementar um método de nome "top" que retorne um MainFrame, este main frame vai ser a tela principal da aplicação.
+
+As classes de objetos principais do SWING tem wrappers com contrução facilitada e propriedades mais amigáveis para a utilização com o Scala.
+
+Agora vamos dar uma olhada em como fazer os objetos, principalmente os botões tratarem os eventos, vamos ver o exemplo de código e depois eu explico ele.
+
+{{samples/039_calculator.scala}}
+
+Neste exemplo temos duas formas de "ouvir" eventos do SWING em scala, uma delas é no caso dos botões, que só interessa a ação do botão, disparada em um clique ou com o enter, utilizei a classe Action para criar o botão, e a segunda forma mais flexível é a combinação do método "listenTo" com a propriedade "reactions".
+No "listenTo" informamos que queremos ouvir os eventos dos objetos listados, e em reactions adicionamos blocos de código que serão utilizados para processar os eventos, neste caso utilizamos a case class disponível para o evento "KeyPressed" para logar quais teclas foram precionadas nos campos de entrada de texto.
+
+Claro que este exemplo de calculadora não é nenhum exemplo de código perfeito, mas eu queria apenas misturar um pouco de swing com um dos exemplos de código deste artigo, acho que não foi uma boa forma de mostrar uma aplicação mais complexa, mas a partir do próximo post vamos falar de actors em scala, e como eles podem te ajudar, isto e um pouco de programação web em um framework escrito em scala.
+
+Se vocês quiserem um artigo mais detalhado sobre os wrappers de scala para programação com SWING é só falar nos comentários que eu escrevo um ASAP.
+
+Por enquanto, espero que a utilização do match e das case classes tenha ficado clara. Se não ficou, se tiverem dúvidas, sugestões ou criticas, por favor deixe seu comentário.
