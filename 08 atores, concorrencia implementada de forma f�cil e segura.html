@@ -1,3 +1,5 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+
 Bom, este post atrazou bastante, mas vamos ver se volto a periodicidade padrão. Só para não perder o histórico, este é o oitavo post da série sobre Scala, já falamos de <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programação Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a> e por último falamos de <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">pattern matching e case classes</a>. Mas deixando de lenga lenga, hoje vamos falar de Actors, que são a solução Scala para programação concorrente.
 <hr/>
 Atualmente um dos maiores desafios de todas as linguagens e plataformas de desenvolvimento é aproveitar melhor os multiplos nucleos dos computadores modernos, que mesmo quando não são multi processados, o processador possui mais de um nucleo, permitindo a execução realmente em paralelo de partes do código, coisa que a maior parte das linguagens já tinha suporte, mas que a grande maior parte dos programadores não estava preparada para utilizar. 
@@ -6,7 +8,7 @@ As mensagens são processadas utilizando match case, então normalmente as mensage
 
 Vamos ver um exemplo simples para começar a entender como criar Actors e depois tentarei mostrar uma situação para tirar proveito deles.
 
-{{samples/040_actors.scala}}
+{{samples/040_actor.scala}}
 
 Agora um pouco de explicação sobre o código:
 <ul>
@@ -29,6 +31,22 @@ Com isto podemos tentar montar um exemplo um pouco mais interessante, simulando 
 
 {{samples/042_actor.scala}}
 
+Os pontos importantes neste exemplo são os seguintes:
+<ul>
+	<li>Na linha 25 o método "reply" é utilizado para retornar uma mensagem para o Actor que enviou a mensagem que esta sendo processada. O mesmo comando pode ser utilizado para retornar qualquer valor para quen enviou a mensagem, mesmo não sendo um Actor</li>
+	<li>na linha 26, é possível utilizar um "receive" dentro de um "reply", nesta parte do código o "react" não vai funcionar</li>
+	<li>O bloco entre as linhas 26 e 28, retorna como resultado a mesma coisa que recebeu como mensagem, neste caso um Option</li>
+	<li>O Thread.sleep só esta na linha 61 por que não sabemos quanto tempo o código precisa para enviar e receber as mensagens, e como os Actors não rodam na thread principal, a aplicação seria finalizada antes que a troca de mensagens ocorresse, no próximo exemplo veremos como evitar isto</li>
+</ul>
+E por último, vamos dar uma olhada em outras formas de mandar mensagens para Actors e como iteragir com eles de fora do código de um Actor.
+{{samples/043_actors.scala}}
+
+Os operadores utilizados para enviar as mensagens desta vez foram "!!" e "!?".
+<ul>
+    <li>o primeiro retorna um objeto do tipo Future, que vai armazenar o retorno da mensagem enviada, quando se executa o Future, se ele ainda não tem o retorno, ele vai ficar esperando e bloquear a thread atual até que algum resultado seja retornado.</li>
+    <li>o segundo, quando executado sem um timeout tem o mesmo comportamento, com a diferença que ele bloqueia a thread até receber o retorno já no envio da mensagem. Como foi chamado na linha 22</li>
+    <li>o mesmo operator pode ser invocado passando-se um timeout, este timeout define quanto tempo a thread pode ser bloqueada na espera de uma resposta, como pode ser visto na linha 24</li>
+</ul>
 
 Bom, acho que por hoje era isto, não consegui pensar em uma aplicação simples para montar o exemplo, mas acho que apenas estes exemplos já ajudam bastante.
 Se você leu até aqui, gostaria de deixar umas pergunta para que sejam respondidas nos comentários: 

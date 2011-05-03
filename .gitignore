@@ -3,3 +3,5 @@ output/*
 .bundle
 .redcar/*
 *.class
+*.swo
+*~
