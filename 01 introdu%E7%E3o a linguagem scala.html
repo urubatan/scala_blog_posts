@@ -1,0 +1,173 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+Este é o primeiro de uma série de posts que vou escrever sobre a linguagem <a href="http://www.scala-lang.org">Scala</a>, e não vou escrever sobre Scala por que sou um expert na linguagem, bem lonje disto, estou aprendendo scala agora como comentei no post <a href="http://www.urubatan.com.br/o-que-eu-gostei-na-linguagem-scala/">"O que eu gostei na linguagm Scala"</a>, e como há bastante tempo não tenho paciência para escrever posts básicos sobre Java e já existem muitos posts básicos sobre Ruby, resolvi aproveitar emquanto Scala é novidade para mim e escrever um tipo de "Scala for Dummies".
+
+Vou testar tudo o que eu escrever, mas se eu falar alguma besteira e alguem ai perceber, por favor me avisem, é só deixar um comentário que vou corrigir o mais rápido possível.
+
+<h2>O que é Scala</h2>
+
+Scala é uma linguagem de programação Objeto/Funcional, uma linguagem com caracteristicas de linguagem Orientada a Objeto e de linguagem Funcional.
+
+A linguagem Scala foi criada por Martin Odersky, um programador Java de longa data, que conhecia muito bem as frustrações da linguagem Java, e também sabia que a plataforma Java é uma das mais ricas e praticamente unipresentes do mercado, então ele criou a visão de aplicar o melhor conhecimento da comunidade academica para tornar a experiência de programar em java muito melhor, e até mesmo divertida.
+
+Em resumo, a idéia principal da linguagem Scala é ser um Java melhorado, uma linguagem de programação de propósito geral que roda sobre a Java Virtual Machine.
+
+<h2>Orientação a Objeto</h2>
+
+Scala é uma linguagem puramente orientada a objetos no sentido de que todo valor é um objeto. Tipos e comportamentos de objetos são definidos por classes e traits. Classes são extendidas por subclasses e por um mecanismo flexível de composição baseado em mixins, utilizado como um substituto limpo e bem mais claro para herança multipla.
+
+<h2>Programação Funcional</h2>
+
+Scala é também uma linguagem funcional no sentido de que cada função é também um valor. Tem uma sintaxe limpa e fácil para definir funções anonimas, suporta higher-order functions, permite funções encadeadas e suporta currying.
+Scala tem case classes e suporte nativo a pattern matching presente em muitas linguagens de programação funcionais.
+
+<h2>Tipagem estática</h2>
+
+Scala é estaticamente tipada, mas tem recursos que permitem que isto não implique em código desnecessário escrito, como por exemplo inferência de tipos alem dosseguintes recursos:
+
+<ul>
+  <li>classes genéricas</li>
+  <li>anotações de variância</li>
+  <li>limites de tipo superior e inferior</li>
+  <li>classes internas e tipos abstratos como membros de objetos</li>
+  <li>tipos compostos</li>
+  <li>views</li>
+  <li>métodos polimorficos</li>
+</ul>
+
+Um recurso que eu acho interessantissímo é a inferência de tipos local, que permite que o compilador determine o tipo de uma variável quando isto é obvio na declaração da mesma, e também permite que a declaração de tipos seja opcional, como pode ser visto no exemplo abaixo.
+
+{{samples/000_local_type_inference.scala}}
+
+<h2>Uma linguagem extensível</h2>
+
+Scala provê uma combinação incrível de mecanismos que tornam fácil a criação de novas construções para a linguagem em forma de bibliotecas:
+
+<ul>
+  <li>Qualquer método pode ser utilizado como um operador</li>
+  <li>Closures são construidas automaticamente, dependendo do tipo esperado</li>
+</ul>
+
+A utilização conjunta destes recursos, possibilita a definição de novos statements, sem alterar a sintaxe da linguagem e sem utilizar recursos "estilo macro" de meta programação. Tornando o código das DLSs bastante limpo e relativamente fácil de ser lido.
+
+<h2>Interoperabilidade com Java e .NET</h2>
+
+Scala foi criada para ser um Java melhor que o Java, mas melhor do que isto, hoje é ppossível compilar o código Scala tanto para rodar na JVM quanto para rodar no .NET CLR.
+
+<h2>Começando a brincadeira</h2>
+
+Para começar a programar em Scala, o primeiro passo é baixar a distribuição, para isto você vai precisar já ter uma JVM instalada, se ainda não tem uma JVM acesse <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">esta página</a> antes de continuar.
+Para baixar o instalador da Scala <a href="http://www.scala-lang.org/downloads">acesse esta página</a>, você pode escolher a versão do instalador que você quer baixar, eu recomendo o .zip ou .tar.bz2 dependendo da sua plataforma.
+Escolha um diretório e descompacte o arquivo baixado, e renomeie o arquivo criado para scala.
+Por exemplo, eu baixei o arquivo scala-2.8.1.final.zip, descompactei em c:\ e este processo criou o diretório c:\scala-2.8.1.final, então eu renomeei este diretório para c:\scala. Este passo é opcional, mas eu acho que facilita a vida no futuro :D
+
+Depois disto vamos configurar a maquina.
+
+Defina a variável SCALA_HOME apontando para o diretório onde você instalou o pacote baixado, no meu caso SCALA_HOME=c:\scala.
+Altere a variável PATH para incluir SCALA_HOME\bin, se você usa windows PATH=%PATH%;%SCALA_HOME%\bin, se usa *nix ou Mac PATH=$PATH:$SCALA_HOME/bin.
+No windows clique com o botão direito em My Computer, selecione Properties, na guia Advanced clique em Environment Variables.
+Em um *nix ou Mac edite o arquivo .bashrc ou o equivalente para o shell que você estiver utilizando.
+
+Depois de tudo instalado, podemos começar a escrever código Scala.
+
+Uma coisa interessante que Scala tem, e que depois que aprendi Ruby me faz muita falta no Java é um interpretador iterativo, em um console, execute o comando "scala" sem nenhum parâmetro, você deve ver um prompt semelhante a este:
+<pre lang="text" line="1">
+Welcome to Scala version 2.8.1.final (Java HotSpot(TM) Client VM, Java 1.6.0_04).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala>
+</pre>
+neste prompt você pode digitar qualquer código scala, criar classes, testar comandos, carregar bibliotecas, absolutamente qualquer coisa que você poderia escrever em um arquivo .scala e compilar você pode digitar neste prompt, e ter o resultado instantâneo, por exemplo, tente digitar:
+<pre lang="scala" line="1">
+println("hello world")
+</pre>
+
+Alem disto, também é possível compilar as classes Scala como estamos acostumados com o Java, por exemplo segue um exemplo de hello world escrito em scala bem semelhante ao do Java:
+
+{{samples/001_helloworld.scala}}
+
+Você pode criar este arquivo e depois compilar com o comando:
+<pre lang="text" line="1">
+scalac 001_helloworld.scala
+</pre>
+
+Isto vai criar o arquivo HelloWorld.class, que pode ser executando com o comando:
+<pre lang="text" line="1">
+scala HelloWorld
+</pre>
+
+Como foi criado um arquivo .class, também é possível executar com o java desde que seja passado o classpath apropriado, em uma maquina windows poderia ser:
+<pre lang="text" line="1">
+java -cp %SCALA_HOME%\lib\scala-library.jar;. HelloWorld
+</pre>
+
+Claro que a preguiça me impede de utilizar isto com frequencia, mas coloquei este exemplo aqui para mostrar que dentro de um .jar, classes escala podem ser acessadas sem problema de uma classe .java.
+
+Alem deste HelloWorld estilo Java, existe também uma outra opção, em vez de criar um método "main", pode-se estender a classe Application e o corpo da classe vai ser executado como ponto de entrada para a aplicação, como no exemplo abaixo:
+{{samples/002_helloworld.scala}}
+
+Outro recurso bastante interessante é a possibilidade de criar scripts shell utilizando Scala, por exemplo no windows pode se criar um .bat como no seguinte código:
+{{samples/004_batchscript.bat}}
+
+Ou em um sistem *nix/mac assim:
+{{samples/003_bashscript.sh}}
+
+Isto permite que você utilize todo o seu conhecimento de programação para criar aqueles pequenos utiitários que tornam o seu dia a dia mais fácil, e uma coisa interessante é a possibilidade de fazer isto também no windows, já que a maior parte das outras ferramentas para isto não facilitam muito a vida de usuários windows :D
+
+<h2>Escrevendo menos código</h2>
+
+Vamos ver um exemplo um pouquinho mais complexo mostrando alguns recursos interessantes da linguagem.
+Para começar vamos ver:
+<ul>
+  <li>Implicit contructor parameters</li>
+  <li>expressions</li>
+</ul>
+
+{{samples/005_personapp.scala}}
+
+Na linha 1 podemos ver variáveis sendo declaradas na definição da classe, isto faz com que seja declarado um construtor automaticamente, que recebe aqueles parâmetros e utiliza os mesmos para setar o valor de variáveis privadas com o mesmo nome, ou seja, em uma linha definimos o nome da classe, um construtor e 3 variáveis privadas da classe que serão inicializadas automaticamente quando alguem instanciar uma variável desta classe.
+
+Na linha 3 podemos ver a sobreescrita do método toString utilizando "expression as method body", todos os comandos em scala são expressões, poderiamos colocar apenas uma string fixa ali que funcionaria normalmente, e qualquer expressão pode ser utilizada como o código de um método ou função, isto permite que implementemos métodos delegados assim:
+
+{{samples/006_charcounter.scala}}
+
+Na linha 2, definimos como corpo do método getLen a expressão "lst.length".
+
+<h2>Herança e function as a value</h2>
+
+Scala como a maior parte das linguagens orientadas a objeto suporta Herança, classes abstratas, veja este exemplo simples para deixar a idéia um pouco mais clara.
+
+{{samples/007_simpleinheritance.scala}}
+
+Na linha 1 declaramos uma classe abstrata de nome Person, nesta classe definimos um método também abstrato na linha 3, percebam que terminei a linha com um ";", ele é opcional, mas como não foi definido o corpo do método eu acho mais "bonito" colocar ele ali.
+
+Nas linhas 6 a 8, e 10 a 12, definimos sub classes para Person e sobre escrevemos o método abstrato, definindo um corpo para o mesmo. A aplicação das linhas 14 a 20 é apenas um exemplo.
+
+Outra coisa que pode ser vista neste exemplo é que as classes Person, Student e Worker foram declaradas com a palavra chave "class" e PersonApp com "object", "object" é a forma de se declarar uma classe estática em Scala, a palavra chave static não existe, e para ter uma melhor orientação a objeto, não existem métodos ou variáveis de classe, no caso da palavra chave "object" o que o compilador faz é criar uma classe, e declarar um objeto singleton da mesma classe, o nome real da classe após compilado com o "scalac" vai ser "PersonApp$" e o objeto singleton da classe vai ter o nome declarado, depois disto você pode acessar o objeto como qualquer outro objeto Scala.
+
+<h2>Resumo do primeiro artigo</h2>
+
+<ul>
+  <li>Scala é uma linguagem de paradigma misto OO/Funcional</li>
+  <li>Nasceu para ser um Java melhor ue o Java, mas hoje roda também em .NET</li>
+  <li>É uma linguagem de tipagem forte e estática</li>
+  <li><b>scala</b> é o interpretador e <b>scalac</b> o compilador</li>
+  <li><b>var</b> define uma variável, <b>val</b> define uma constante</li>
+  <li>Tudo é um objeto</li>
+  <li>Tudo é uma expressão, e expressões podem ser o corpo de um método</li>
+  <li><b>class</b> define uma classe normal, <b>object</b> define um objeto singleton com classe própria</li>
+  <li>Scala é muito legal, mas se você só leu isto sobre scala até agora ainda não deve concordar comigo</li>
+</ul>
+
+<h2>Próximos passos</h2>
+
+Vou tentar manter a média de um artigo por semana desta série sobre Scala, no próximo vou explorar um pouco mais a sintaxe da linguagem e o "Type System" utilizado, brincar um pouco com traits, ...
+
+Se você não quiser esperar, segue uma pequena lista de links sobre a linguagem.
+<ul>
+  <li><a href="http://www.scala-lang.org">Scala-Lang</a></li>
+  <li><a href="http://programming-scala.labs.oreilly.com">Programming Scala - livro para review no orreily, não sei até quando vai estar disponível</a></li>
+  <li><a href="http://liftweb.net/">Framework para desenvolvimento web desenvolvido em Scala</a></li>
+</ul>
+
+Até a próxima semana, qualquer opinião, dúvida ou critica favor deixar um comentário neste post, mas fique avisado que as criticas serão lidas mas podem não ser publicadas :D

@@ -1,0 +1,27 @@
+<center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
+
+Mais um post muito atrazado, desta vez levei mais de 3 meses para continuar falando de scala, mas como comentei no post anterior foram 3 meses corridos, então voltando ao histórico, este é o nono post da série sobre Scala, já falamos de <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o básico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orientação a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreensão de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programação Funcional em Scala</a>, depois <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a>, depois  <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">pattern matching e case classes</a> e por último sobre <a href="http://www.urubatan.com.br/scala-atores-concorrencia-implementada-de-forma-facil-e-segura/">Atores e concorrência em scala</a>. Agora vamos revisar alguns conceitos de orientação a objetos e vamos ver alguns recursos interessantes da linguagem scala.
+<hr/>
+Como vimos nos dois primeiros artigos, tudo em scala é um objeto, e scala suporta herança e polimorfismo, como podemos ver no exemplo abaixo (já mostrado antes):
+{{samples/009_heranca.scala}}
+
+Mas os recursos OO de scala não ficam só nisto, podemos utilizar classes internas como no exemplo simples abaixo:
+{{samples/044_inner_class.scala}}
+Este exemplo é bem simples para que não fiquem dúvidas, é possível criar classes aninhadas, mas diferente do Java, a classe Chapter não esta presa a classe Book, e sim a instância de livro que a criou, parecido com a relação entre os objetos de uma classe e o objeto da classe exterior em Java, podemos ver uma continuação do exemplo anterior para demonstrar melhor este conceito:
+{{samples/045_inner_class.scala}}
+Mas ainda continuamos com exemplos simples. Em scala eu tenho herança e polimorfismo, e posso usar isto em métodos, métodos que mudam o tipo de retorno como por mágica dependendo dos parâmetros recebidos, como no exemplo abaixo, que o método pode retornar um List[Int] ou List[String] de acordo com os parâmetros passados.
+{{samples/046_polimorfic_methods.scala}}
+Neste exemplo é fácil de verificar o que esta acontecendo, pelo menos quando executamos o código, e a sintaxe para isto também é simples, o tipo variável é definido entre colchetes na declaração do método, como pode ser visto na linha 1, depois disto o tipo pode ser referenciado em qualquer parte do código dentro do mesmo método.
+Outro recurso bastante interessante que também já vimos em outros exemplos, é a composição de classes, que funciona bem diferente das classes abertas do Ruby, mas é bem parecida com a composição de classes com modulos no Ruby, o recurso para composição de classes em Scala é o uso de "traits", vamos dar uma nova olhada em um dos exemplos de traits.
+{{samples/010_traits.scala}}
+É possível definir parte do comportamento esperado em um grupo de classes utilizando traits, mas é possível adicionar traits também no momento em que uma classe é instanciada, como pode ser visto no exemplo abaixo:
+{{samples/047_traits.scala}}
+E ainda temos as views, que são uma forma de criar conversões automáticas de tipos, em scala este recurso é chamado de "views", a idéia é ter um método definido que sabe como converter um objeto em outro, e quando o compilador precisa explicitamente do segundo tipo, ou um método do segundo tipo é chamado no primeiro, o método de conversão é chamado automaticamente.
+Isto parece confuso, então vamos ver um exemplo simples de como isto funciona para facilitar as explicações:
+{{samples/048_views.scala}}
+Na linha 6, quando o método isDigit é chamado na literal de um caracter, o compilador verifica todas as possíveis conversões daquele objeto que possuam um método isDigit, verifica todos os métodos declarados como "implicit", que recebam o objeto como parâmetro para fazer a conversão, e chama o método implicitamente para converter o objeto e chamar o método na classe que tem o método declarado.
+Se existir algum conflito no escopo, por exemplo duas possíveis conversões, um erro sera gerado, neste caso a conversão precisara ser feita manualmente.
+
+E acredito agora que estamos prontos para voltar a falar de programação funcional em scala, já conhecemos o suficiente para escrever código Java em scala, mas a idéia de se aprender uma nova linguagem é aprender nvoas formas de se resolver problemas, então nos próximos posts vamos entrar um pouco mais no mundo funcional da linguagem, vamos entender as implementações e pelo menos conseguiremos lêr muitos dos códigos complicados em scala que vemos por ai ...
+
+E por último, se você leu até aqui, talvez você queira me seguir no <a href="http://twitter.com/urubatan">twitter</a> ou assinar o <a href="http://www.urubatan.com.br/feed">feed do blog</a>.
