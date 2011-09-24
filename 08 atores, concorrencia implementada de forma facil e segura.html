@@ -1,56 +1,56 @@
 <center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
 
-Bom, este post atrazou bastante, mas vamos ver se volto a periodicidade padr„o. SÛ para n„o perder o histÛrico, este È o oitavo post da sÈrie sobre Scala, j· falamos de <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o b·sico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">OrientaÁ„o a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreens„o de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">ProgramaÁ„o Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a> e por ˙ltimo falamos de <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">pattern matching e case classes</a>. Mas deixando de lenga lenga, hoje vamos falar de Actors, que s„o a soluÁ„o Scala para programaÁ„o concorrente.
+Bom, este post atrazou bastante, mas vamos ver se volto a periodicidade padr√£o. S√≥ para n√£o perder o hist√≥rico, este √© o oitavo post da s√©rie sobre Scala, j√° falamos de <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o b√°sico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orienta√ß√£o a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreens√£o de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programa√ß√£o Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a> e por √∫ltimo falamos de <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">pattern matching e case classes</a>. Mas deixando de lenga lenga, hoje vamos falar de Actors, que s√£o a solu√ß√£o Scala para programa√ß√£o concorrente.
 <hr/>
-Atualmente um dos maiores desafios de todas as linguagens e plataformas de desenvolvimento È aproveitar melhor os multiplos nucleos dos computadores modernos, que mesmo quando n„o s„o multi processados, o processador possui mais de um nucleo, permitindo a execuÁ„o realmente em paralelo de partes do cÛdigo, coisa que a maior parte das linguagens j· tinha suporte, mas que a grande maior parte dos programadores n„o estava preparada para utilizar. 
-A resposta da Scala para facilitar a programaÁ„o concorrente s„o os Actors (ou atores), que s„o analogos aos Threads do Java, mas tem muitos recursos para facilitar a vida do programador e uma grande diferenÁa, Actors em scala possuem um protocolo definido para se comunicarem, eles enviam mensagens uns para os outros em vez de acessar as mesmas vari·veis que outras threads.
-As mensagens s„o processadas utilizando match case, ent„o normalmente as mensagens s„o <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">case objects</a> que estudamos no artigo anterior, isto permite que dados n„o alter·veis sejam passados de uma ator para outro evitando assim a grande maior parte dos problemas existentes na programaÁ„o concorrente.
+Atualmente um dos maiores desafios de todas as linguagens e plataformas de desenvolvimento √© aproveitar melhor os multiplos nucleos dos computadores modernos, que mesmo quando n√£o s√£o multi processados, o processador possui mais de um nucleo, permitindo a execu√ß√£o realmente em paralelo de partes do c√≥digo, coisa que a maior parte das linguagens j√° tinha suporte, mas que a grande maior parte dos programadores n√£o estava preparada para utilizar. 
+A resposta da Scala para facilitar a programa√ß√£o concorrente s√£o os Actors (ou atores), que s√£o analogos aos Threads do Java, mas tem muitos recursos para facilitar a vida do programador e uma grande diferen√ßa, Actors em scala possuem um protocolo definido para se comunicarem, eles enviam mensagens uns para os outros em vez de acessar as mesmas vari√°veis que outras threads.
+As mensagens s√£o processadas utilizando match case, ent√£o normalmente as mensagens s√£o <a href="http://www.urubatan.com.br/scala-match-e-case-classes/">case objects</a> que estudamos no artigo anterior, isto permite que dados n√£o alter√°veis sejam passados de uma ator para outro evitando assim a grande maior parte dos problemas existentes na programa√ß√£o concorrente.
 
-Vamos ver um exemplo simples para comeÁar a entender como criar Actors e depois tentarei mostrar uma situaÁ„o para tirar proveito deles.
+Vamos ver um exemplo simples para come√ßar a entender como criar Actors e depois tentarei mostrar uma situa√ß√£o para tirar proveito deles.
 
 {{samples/040_actor.scala}}
 
-Agora um pouco de explicaÁ„o sobre o cÛdigo:
+Agora um pouco de explica√ß√£o sobre o c√≥digo:
 <ul>
 	<li>Para criar um Actor extendemos a classe Actor, como podemos ver nas linhas 8 e 30</li>
 	<li>Para enviar uma mensagem para um ator, utilizamos um opeador novo, o "!"", como podemos ver nas linhas 18, 22 e 38</li>
-	<li>Quando um Actor recebe uma mensagem, ele pode responder a mensagem, ou seja, enviar uma mensagem para quem enviou a mensagem que esta sendo processada utilizando o mÈtodo "sender" como podemos ver na linha 38</li>
-	<li>Semelhante aos Threads do Java, um Actor precisa ser iniciado, e para isto usa-se o mÈtodo "start" como podemos ver nas linhas 50 e 51</li>
-	<li>ApÛs extender a classe Actor, È necess·rio implementar o mÈtodo abstrato "act"</li>
-	<li>Para receber as mensagens È necess·rio chamar o mÈtodo "receive" e passar um bloco para este, onde a mensagem sera processada</li>
-	<li>O mÈtodo "receive" bloqueia a thread atÈ que uma mensagem seja recebida</li>
-	<li>Os atores trabalham inicialmente em um pool de threads com tamanho inicial 4, este pool aumenta automaticamente quando h· mais trabalho para ser realizado</li>
-	<li>È possÌvel implementar os actors sem a utilizaÁ„o de threads, eles podem funcionar baseados em mensagens, substituindo o mÈtodo "receive" pelo mÈtodo "react" mas este n„o pode ser chamado dentro de um while, para resolver isto, foi criado o mÈtodo "loop", o exemplo alterado pode ser visto abaixo</li>
+	<li>Quando um Actor recebe uma mensagem, ele pode responder a mensagem, ou seja, enviar uma mensagem para quem enviou a mensagem que esta sendo processada utilizando o m√©todo "sender" como podemos ver na linha 38</li>
+	<li>Semelhante aos Threads do Java, um Actor precisa ser iniciado, e para isto usa-se o m√©todo "start" como podemos ver nas linhas 50 e 51</li>
+	<li>Ap√≥s extender a classe Actor, √© necess√°rio implementar o m√©todo abstrato "act"</li>
+	<li>Para receber as mensagens √© necess√°rio chamar o m√©todo "receive" e passar um bloco para este, onde a mensagem sera processada</li>
+	<li>O m√©todo "receive" bloqueia a thread at√© que uma mensagem seja recebida</li>
+	<li>Os atores trabalham inicialmente em um pool de threads com tamanho inicial 4, este pool aumenta automaticamente quando h√° mais trabalho para ser realizado</li>
+	<li>√© poss√≠vel implementar os actors sem a utiliza√ß√£o de threads, eles podem funcionar baseados em mensagens, substituindo o m√©todo "receive" pelo m√©todo "react" mas este n√£o pode ser chamado dentro de um while, para resolver isto, foi criado o m√©todo "loop", o exemplo alterado pode ser visto abaixo</li>
 </ul>
 
 {{samples/041_actor.scala}}
 
-Uma coisa interessante sobre o "react" È que ele pode ser encadeado, ou seja È possÌvel escrever lÛgicas mais complexas com diversas mensagens para completar a atuaÁ„o de um ator.
+Uma coisa interessante sobre o "react" √© que ele pode ser encadeado, ou seja √© poss√≠vel escrever l√≥gicas mais complexas com diversas mensagens para completar a atua√ß√£o de um ator.
 
-Com isto podemos tentar montar um exemplo um pouco mais interessante, simulando uma peÁa de teatro, bom, na verdade n„o vai ser nada t„o complexo, v„o ser apenas 3 atores brincando de telefone sem fio para que possamos ver mais um recurso interessante dos atores, veja o exemplo asseguir e logo depois vou explicar os pontos importantes do cÛdigo:
+Com isto podemos tentar montar um exemplo um pouco mais interessante, simulando uma pe√ßa de teatro, bom, na verdade n√£o vai ser nada t√£o complexo, v√£o ser apenas 3 atores brincando de telefone sem fio para que possamos ver mais um recurso interessante dos atores, veja o exemplo asseguir e logo depois vou explicar os pontos importantes do c√≥digo:
 
 {{samples/042_actor.scala}}
 
-Os pontos importantes neste exemplo s„o os seguintes:
+Os pontos importantes neste exemplo s√£o os seguintes:
 <ul>
-	<li>Na linha 25 o mÈtodo "reply" È utilizado para retornar uma mensagem para o Actor que enviou a mensagem que esta sendo processada. O mesmo comando pode ser utilizado para retornar qualquer valor para quen enviou a mensagem, mesmo n„o sendo um Actor</li>
-	<li>na linha 26, È possÌvel utilizar um "receive" dentro de um "reply", nesta parte do cÛdigo o "react" n„o vai funcionar</li>
+	<li>Na linha 25 o m√©todo "reply" √© utilizado para retornar uma mensagem para o Actor que enviou a mensagem que esta sendo processada. O mesmo comando pode ser utilizado para retornar qualquer valor para quen enviou a mensagem, mesmo n√£o sendo um Actor</li>
+	<li>na linha 26, √© poss√≠vel utilizar um "receive" dentro de um "reply", nesta parte do c√≥digo o "react" n√£o vai funcionar</li>
 	<li>O bloco entre as linhas 26 e 28, retorna como resultado a mesma coisa que recebeu como mensagem, neste caso um Option</li>
-	<li>O Thread.sleep sÛ esta na linha 61 por que n„o sabemos quanto tempo o cÛdigo precisa para enviar e receber as mensagens, e como os Actors n„o rodam na thread principal, a aplicaÁ„o seria finalizada antes que a troca de mensagens ocorresse, no prÛximo exemplo veremos como evitar isto</li>
+	<li>O Thread.sleep s√≥ esta na linha 61 por que n√£o sabemos quanto tempo o c√≥digo precisa para enviar e receber as mensagens, e como os Actors n√£o rodam na thread principal, a aplica√ß√£o seria finalizada antes que a troca de mensagens ocorresse, no pr√≥ximo exemplo veremos como evitar isto</li>
 </ul>
-E por ˙ltimo, vamos dar uma olhada em outras formas de mandar mensagens para Actors e como iteragir com eles de fora do cÛdigo de um Actor.
+E por √∫ltimo, vamos dar uma olhada em outras formas de mandar mensagens para Actors e como iteragir com eles de fora do c√≥digo de um Actor.
 {{samples/043_actors.scala}}
 
 Os operadores utilizados para enviar as mensagens desta vez foram "!!" e "!?".
 <ul>
-    <li>o primeiro retorna um objeto do tipo Future, que vai armazenar o retorno da mensagem enviada, quando se executa o Future, se ele ainda n„o tem o retorno, ele vai ficar esperando e bloquear a thread atual atÈ que algum resultado seja retornado.</li>
-    <li>o segundo, quando executado sem um timeout tem o mesmo comportamento, com a diferenÁa que ele bloqueia a thread atÈ receber o retorno j· no envio da mensagem. Como foi chamado na linha 22</li>
+    <li>o primeiro retorna um objeto do tipo Future, que vai armazenar o retorno da mensagem enviada, quando se executa o Future, se ele ainda n√£o tem o retorno, ele vai ficar esperando e bloquear a thread atual at√© que algum resultado seja retornado.</li>
+    <li>o segundo, quando executado sem um timeout tem o mesmo comportamento, com a diferen√ßa que ele bloqueia a thread at√© receber o retorno j√° no envio da mensagem. Como foi chamado na linha 22</li>
     <li>o mesmo operator pode ser invocado passando-se um timeout, este timeout define quanto tempo a thread pode ser bloqueada na espera de uma resposta, como pode ser visto na linha 24</li>
 </ul>
 
-Bom, acho que por hoje era isto, n„o consegui pensar em uma aplicaÁ„o simples para montar o exemplo, mas acho que apenas estes exemplos j· ajudam bastante.
-Se vocÍ leu atÈ aqui, gostaria de deixar umas pergunta para que sejam respondidas nos coment·rios: 
-1) Baseado em sua experiÍncia, quais vantagens vocÍ acha que os atores trazem sobre a implementaÁ„o de thread padr„o, como por exemplo de Java ou C#?
-2) VocÍ costuma escrever cÛdigos pensando em execuÁ„o concorrente? Quais tÈcnicas vocÍ usa para garantir que seu cÛdigo È thread safe?
+Bom, acho que por hoje era isto, n√£o consegui pensar em uma aplica√ß√£o simples para montar o exemplo, mas acho que apenas estes exemplos j√° ajudam bastante.
+Se voc√™ leu at√© aqui, gostaria de deixar umas pergunta para que sejam respondidas nos coment√°rios: 
+1) Baseado em sua experi√™ncia, quais vantagens voc√™ acha que os atores trazem sobre a implementa√ß√£o de thread padr√£o, como por exemplo de Java ou C#?
+2) Voc√™ costuma escrever c√≥digos pensando em execu√ß√£o concorrente? Quais t√©cnicas voc√™ usa para garantir que seu c√≥digo √© thread safe?
 
-E por ˙ltimo, se vocÍ leu atÈ aqui, talvez vocÍ queira me seguir no <a href="http://twitter.com/urubatan">twitter</a> ou assinar o <a href="http://www.urubatan.com.br/feed">feed do blog</a>.
+E por √∫ltimo, se voc√™ leu at√© aqui, talvez voc√™ queira me seguir no <a href="http://twitter.com/urubatan">twitter</a> ou assinar o <a href="http://www.urubatan.com.br/feed">feed do blog</a>.

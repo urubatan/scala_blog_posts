@@ -1,58 +1,58 @@
 <center><a href="http://www.scala-lang.org"><img src="http://www.urubatan.com.br/wp-content/uploads/2011/01/newsflash_logo-e1295973840911.png" alt="" title="Scala" /></a></center>
 
-Este È o sÈtimo post da sÈrie sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o b·sico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">OrientaÁ„o a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreens„o de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">ProgramaÁ„o Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a>. Agora vamos falar um pouco de operadores condicionais, pattern matching, type matching e outras possÌveis implementaÁıes para programaÁ„o condicional.
+Este √© o s√©timo post da s√©rie sobre Scala, o primeiro foi <a href="http://www.urubatan.com.br/introducao-a-linguagem-scala/">o b√°sico da linguagem scala</a>, logo depois <a href="http://www.urubatan.com.br/orientacao-a-objetos-em-scala/">Orienta√ß√£o a objetos em scala</a>, um pouco sobre <a href="http://www.urubatan.com.br/scala-closures-operadores-e-dlss/">closures</a>, depois <a href="http://www.urubatan.com.br/scala-compreensao-de-listas-e-mapas/">compreens√£o de listas e mapas</a>, depois <a href="http://www.urubatan.com.br/programacao-funcional-em-scala/">Programa√ß√£o Funcional em Scala</a> e na semana passada sobre <a href="http://www.urubatan.com.br/scala-tipos-parametrizados-limites-superiores-inferiores-e-metodos-polimorficos/">tipos parametrizados</a>. Agora vamos falar um pouco de operadores condicionais, pattern matching, type matching e outras poss√≠veis implementa√ß√µes para programa√ß√£o condicional.
 
 <h2>Pattern Matching</h2>
-Como eu disse que comeÁaria neste artigo com exemplos mais complexos do que os pedaÁos de cÛdigo dos artigos anteriores, a minha proposta para o primeiro exemplo È implementar uma calculadora, provavelmente de mais de uma forma para mostrar v·rias formas de fazer as mesmas operaÁıes, lembrem-se que este vai ser um exemplo simples.
+Como eu disse que come√ßaria neste artigo com exemplos mais complexos do que os peda√ßos de c√≥digo dos artigos anteriores, a minha proposta para o primeiro exemplo √© implementar uma calculadora, provavelmente de mais de uma forma para mostrar v√°rias formas de fazer as mesmas opera√ß√µes, lembrem-se que este vai ser um exemplo simples.
 
-Vamos comeÁar vendo como funciona o pattern matching, este seria o equivalente a um case na linguagem scala, mas um pouco mais flexÌvel do que um case do java, vamos ver no mÈtodo calculadora abaixo.
+Vamos come√ßar vendo como funciona o pattern matching, este seria o equivalente a um case na linguagem scala, mas um pouco mais flex√≠vel do que um case do java, vamos ver no m√©todo calculadora abaixo.
 
 {{samples/034_calculator.scala}}
 
-Como eu comentei, o match pode ser utilizado exatamente como o switch/case do java ou do C++, mas ele È um pouco mais flexÌvel do que isto, vamos implementar a mesma calculadora agora, utilizando type matching, e utilizando classes para implementar cada uma das operaÁıes da calculadora. Mas antes perceba o "_" na ˙ltima posiÁ„o do case, que vai funcionar como uma condiÁ„o default, o que n„o for capturado em nenhuma das outras condiÁıes cai ali.
-Agora vamos a um exemplo com case classes, como s„o chamadas em Scala.
+Como eu comentei, o match pode ser utilizado exatamente como o switch/case do java ou do C++, mas ele √© um pouco mais flex√≠vel do que isto, vamos implementar a mesma calculadora agora, utilizando type matching, e utilizando classes para implementar cada uma das opera√ß√µes da calculadora. Mas antes perceba o "_" na √∫ltima posi√ß√£o do case, que vai funcionar como uma condi√ß√£o default, o que n√£o for capturado em nenhuma das outras condi√ß√µes cai ali.
+Agora vamos a um exemplo com case classes, como s√£o chamadas em Scala.
 
 {{samples/035_calculator.scala}}
 
-Os case classes s„o ˙teis apenas no case de pattern matching, as vari·veis de inst‚ncia podem ser utilizadas diratamente no corpo do case como pode ser visto. Esta È uma boa opÁ„o para simular uma enumeraÁ„o, j· que as case classes de uma hierarquia tem que ser obrigatoriamente definidas no mesmo arquivo fonte. Esta È uma estrutura bastante utilizada em programaÁ„o funcional, mas para quem esta acostumado com programaÁ„o orientada a objetos esta parece uma abordagem um pouco pobre, por n„o possuir mÈtodos definidos dentro das classes.
-Como scala È uma linguagem mista, ou seja alem de funcional È tambÈm orientada a objetos, podemos utilizar o pattern matching para fazer type matching, como podemos ver no terceiro exemplo de calculadora abaixo.
+Os case classes s√£o √∫teis apenas no case de pattern matching, as vari√°veis de inst√¢ncia podem ser utilizadas diratamente no corpo do case como pode ser visto. Esta √© uma boa op√ß√£o para simular uma enumera√ß√£o, j√° que as case classes de uma hierarquia tem que ser obrigatoriamente definidas no mesmo arquivo fonte. Esta √© uma estrutura bastante utilizada em programa√ß√£o funcional, mas para quem esta acostumado com programa√ß√£o orientada a objetos esta parece uma abordagem um pouco pobre, por n√£o possuir m√©todos definidos dentro das classes.
+Como scala √© uma linguagem mista, ou seja alem de funcional √© tamb√©m orientada a objetos, podemos utilizar o pattern matching para fazer type matching, como podemos ver no terceiro exemplo de calculadora abaixo.
 
 {{samples/036_calculator.scala}}
 
-Como podemos ver neste exemplo, fazer type matching È bastante simples, claro que poderiamos ter declarado mÈtodos nas case classes e chamado estes mÈtodos, mas esta n„o È a ideia das mesmas.
+Como podemos ver neste exemplo, fazer type matching √© bastante simples, claro que poderiamos ter declarado m√©todos nas case classes e chamado estes m√©todos, mas esta n√£o √© a ideia das mesmas.
 
-As case classes tem a fantagem de poder ser instanciadas sem a utilizaÁ„o do "new" mas tem limitaÁıes de todas as classes de uma hierarquia precisarem ser definidas no mesmo arquivo, a idÈia delas È serem utilizada como um tipo de enumeraÁ„o.
+As case classes tem a fantagem de poder ser instanciadas sem a utiliza√ß√£o do "new" mas tem limita√ß√µes de todas as classes de uma hierarquia precisarem ser definidas no mesmo arquivo, a id√©ia delas √© serem utilizada como um tipo de enumera√ß√£o.
 
-Alem do pattern matching, scala ainda tem suporte aos operadores condicionais padr„o da maioria das linguagens imperativas, como o if, else, operadores de loop como o do, while, mas o cÛdigo funcional sempre dapreferencia para a utilizaÁ„o do pattern matching, como no exemplo abaixo.
+Alem do pattern matching, scala ainda tem suporte aos operadores condicionais padr√£o da maioria das linguagens imperativas, como o if, else, operadores de loop como o do, while, mas o c√≥digo funcional sempre dapreferencia para a utiliza√ß√£o do pattern matching, como no exemplo abaixo.
 
 {{samples/037_calculator.scala}}
 
-Neste exemplo o pattern matching esta sendo utilizado para verificar se o objeto È nulo ou n„o, a diferenÁa em linhas de cÛdigo È insignificante, mas a forma de pensar È em diferente de uma linguagem imperativa, no caso do if por exemplo. Em linguagens funcionais, assim como em algumas de paradigma misto como o Scala e o Python, È bastante comum a utilizaÁ„o de mapas para tomar decisıes sobre qual caminho seguir, ou qual cÛdigo executar, e È exatamente isto que o pattern matching È, uma forma especializada de mapa utilizado para tomar decisıes, inclusive em diversos exemplos encontrados na internet, s„o misturados tipos de matching diferentes no mesmo bloco mostrando a flexibilidade da ferramenta.
+Neste exemplo o pattern matching esta sendo utilizado para verificar se o objeto √© nulo ou n√£o, a diferen√ßa em linhas de c√≥digo √© insignificante, mas a forma de pensar √© em diferente de uma linguagem imperativa, no caso do if por exemplo. Em linguagens funcionais, assim como em algumas de paradigma misto como o Scala e o Python, √© bastante comum a utiliza√ß√£o de mapas para tomar decis√µes sobre qual caminho seguir, ou qual c√≥digo executar, e √© exatamente isto que o pattern matching √©, uma forma especializada de mapa utilizado para tomar decis√µes, inclusive em diversos exemplos encontrados na internet, s√£o misturados tipos de matching diferentes no mesmo bloco mostrando a flexibilidade da ferramenta.
 
-<h2>Uma calculadora gr·fica</h2>
-Bom, a calculadora criada atÈ agora n„o me parece uma aplicaÁ„o mais complexa do que os mÈtodos soltos que estavamos criando atÈ agora, ent„o vamos fazer exatamente a mesma calculadora, mas com um pouco de cÛdigo swing, utilizando o pacote java.swing, hoje n„o vou detalhar muito os recursos, apenas comentar o cÛdigo do exemplo, mas se vocÍs se interessarem, deixem coment·rios que escrevo um artigo sÛ sobre o wrapper scala.swing.
+<h2>Uma calculadora gr√°fica</h2>
+Bom, a calculadora criada at√© agora n√£o me parece uma aplica√ß√£o mais complexa do que os m√©todos soltos que estavamos criando at√© agora, ent√£o vamos fazer exatamente a mesma calculadora, mas com um pouco de c√≥digo swing, utilizando o pacote java.swing, hoje n√£o vou detalhar muito os recursos, apenas comentar o c√≥digo do exemplo, mas se voc√™s se interessarem, deixem coment√°rios que escrevo um artigo s√≥ sobre o wrapper scala.swing.
 
-Ent„o vamos ao cÛdigo, a minha idÈia È ter uma calculadora com dois campos de entrada de n˙meros, um bot„o para cada uma das 4 operaÁıes b·sicas, e um label para o resultado.
-O layout vai ser simples, os dois campos de entrada numÈrica estar„o bem no topo da tela, logo abaixo o label para o resultado, e abaixo disto os botıes, o usu·rio deve preencher os dois campos numÈricos, e quando um bot„o de uma das operaÁıes for precionado, o resultado da operaÁ„o devera aparecer no label.
+Ent√£o vamos ao c√≥digo, a minha id√©ia √© ter uma calculadora com dois campos de entrada de n√∫meros, um bot√£o para cada uma das 4 opera√ß√µes b√°sicas, e um label para o resultado.
+O layout vai ser simples, os dois campos de entrada num√©rica estar√£o bem no topo da tela, logo abaixo o label para o resultado, e abaixo disto os bot√µes, o usu√°rio deve preencher os dois campos num√©ricos, e quando um bot√£o de uma das opera√ß√µes for precionado, o resultado da opera√ß√£o devera aparecer no label.
 
-Vamos ver o cÛdigo necess·rio para isto, primeiro apenas para o layout, depois eu adiciono a lÛgica na tela para fazer ela funcionar.
+Vamos ver o c√≥digo necess√°rio para isto, primeiro apenas para o layout, depois eu adiciono a l√≥gica na tela para fazer ela funcionar.
 
 {{samples/038_calculator.scala}}
 
-Este È um exemplo simples dos wrappers scala para Swing, a aplicaÁ„o b·sica È criada utilizando-se o objeto SimpleSwingApplication.
-A classe SimpleSwingApplication faz o bootstrap do swing, e facilita o desenvolvimento, ela precisa implementar um mÈtodo de nome "top" que retorne um MainFrame, este main frame vai ser a tela principal da aplicaÁ„o.
+Este √© um exemplo simples dos wrappers scala para Swing, a aplica√ß√£o b√°sica √© criada utilizando-se o objeto SimpleSwingApplication.
+A classe SimpleSwingApplication faz o bootstrap do swing, e facilita o desenvolvimento, ela precisa implementar um m√©todo de nome "top" que retorne um MainFrame, este main frame vai ser a tela principal da aplica√ß√£o.
 
-As classes de objetos principais do SWING tem wrappers com contruÁ„o facilitada e propriedades mais amig·veis para a utilizaÁ„o com o Scala.
+As classes de objetos principais do SWING tem wrappers com contru√ß√£o facilitada e propriedades mais amig√°veis para a utiliza√ß√£o com o Scala.
 
-Agora vamos dar uma olhada em como fazer os objetos, principalmente os botıes tratarem os eventos, vamos ver o exemplo de cÛdigo e depois eu explico ele.
+Agora vamos dar uma olhada em como fazer os objetos, principalmente os bot√µes tratarem os eventos, vamos ver o exemplo de c√≥digo e depois eu explico ele.
 
 {{samples/039_calculator.scala}}
 
-Neste exemplo temos duas formas de "ouvir" eventos do SWING em scala, uma delas È no caso dos botıes, que sÛ interessa a aÁ„o do bot„o, disparada em um clique ou com o enter, utilizei a classe Action para criar o bot„o, e a segunda forma mais flexÌvel È a combinaÁ„o do mÈtodo "listenTo" com a propriedade "reactions".
-No "listenTo" informamos que queremos ouvir os eventos dos objetos listados, e em reactions adicionamos blocos de cÛdigo que ser„o utilizados para processar os eventos, neste caso utilizamos a case class disponÌvel para o evento "KeyPressed" para logar quais teclas foram precionadas nos campos de entrada de texto.
+Neste exemplo temos duas formas de "ouvir" eventos do SWING em scala, uma delas √© no caso dos bot√µes, que s√≥ interessa a a√ß√£o do bot√£o, disparada em um clique ou com o enter, utilizei a classe Action para criar o bot√£o, e a segunda forma mais flex√≠vel √© a combina√ß√£o do m√©todo "listenTo" com a propriedade "reactions".
+No "listenTo" informamos que queremos ouvir os eventos dos objetos listados, e em reactions adicionamos blocos de c√≥digo que ser√£o utilizados para processar os eventos, neste caso utilizamos a case class dispon√≠vel para o evento "KeyPressed" para logar quais teclas foram precionadas nos campos de entrada de texto.
 
-Claro que este exemplo de calculadora n„o È nenhum exemplo de cÛdigo perfeito, mas eu queria apenas misturar um pouco de swing com um dos exemplos de cÛdigo deste artigo, acho que n„o foi uma boa forma de mostrar uma aplicaÁ„o mais complexa, mas a partir do prÛximo post vamos falar de actors em scala, e como eles podem te ajudar, isto e um pouco de programaÁ„o web em um framework escrito em scala.
+Claro que este exemplo de calculadora n√£o √© nenhum exemplo de c√≥digo perfeito, mas eu queria apenas misturar um pouco de swing com um dos exemplos de c√≥digo deste artigo, acho que n√£o foi uma boa forma de mostrar uma aplica√ß√£o mais complexa, mas a partir do pr√≥ximo post vamos falar de actors em scala, e como eles podem te ajudar, isto e um pouco de programa√ß√£o web em um framework escrito em scala.
 
-Se vocÍs quiserem um artigo mais detalhado sobre os wrappers de scala para programaÁ„o com SWING È sÛ falar nos coment·rios que eu escrevo um ASAP.
+Se voc√™s quiserem um artigo mais detalhado sobre os wrappers de scala para programa√ß√£o com SWING √© s√≥ falar nos coment√°rios que eu escrevo um ASAP.
 
-Por enquanto, espero que a utilizaÁ„o do match e das case classes tenha ficado clara. Se n„o ficou, se tiverem d˙vidas, sugestıes ou criticas, por favor deixe seu coment·rio.
+Por enquanto, espero que a utiliza√ß√£o do match e das case classes tenha ficado clara. Se n√£o ficou, se tiverem d√∫vidas, sugest√µes ou criticas, por favor deixe seu coment√°rio.
